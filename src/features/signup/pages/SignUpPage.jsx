@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signUpUser } from '../services/signupService';
 import { selectSignUpLoading } from '../redux/signupSelector';
 import { useNavigate } from 'react-router-dom';
-
+import fevlogo from "../../../assets/fevlogo.png";
 const SignUpPage = () => {
   const [user, setUser] = useState({
     name: "",
@@ -51,8 +51,16 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className='min-h-screen flex bg-gradient-to-br from-black via-gray-900 to-blue-500'>
-      <SignUpForm user={user} setUser={setUser} handleSubmit={handleSubmit} loading={loading} />
+    
+    <div className="min-h-screen flex bg-gradient-to-br from-black via-gray-900 to-blue-500">
+      <div className="w-1/2 p-8">
+        <img src={fevlogo} alt="fev logo" className="w-32" />
+      </div>
+      <div className="w-1/2 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm ">
+          <SignUpForm user={user} setUser={setUser} handleSubmit={handleSubmit} loading={loading} />
+        </div>
+      </div>
     </div>
   )
 }

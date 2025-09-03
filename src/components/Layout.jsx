@@ -1,60 +1,41 @@
-// // Layout.jsx
-// import { Outlet } from 'react-router-dom';
-// import Header from './Header';
-// import Sidebar from './Sidebar';
+import { Layout as AntLayout } from "antd";
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { useEffect } from "react";
 
-// const Layout = () => {
-//   return (
-//     <div className='flex flex-col h-screen'>
-//       <Header />
-//       <div className='flex flex-row flex-grow overflow-hidden'>
-//         <div className='bg-gray-200 w-[20%] p-4'>
-//           {/* <h2 className='text-black'>Sidebar</h2> */}
-//           <Sidebar/>
-//         </div>
-//         <div className='bg-white w-[80%] p-4 overflow-auto scrollbar-hide'>
-//           <Outlet /> {/* This renders nested routes */}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Layout;
-
-
-// Layout.jsx
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from './Header';
-import Sidebar from './Sidebar';
+const { Content } = AntLayout;
 
 const Layout = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
+  // useEffect(() => {
+  //   const idToken = localStorage.getItem("idToken");
+  //   if (!idToken) {
+  //     navigate("/"); 
+  //   }
+  // }, [navigate]);
   return (
-    <div className='flex flex-col h-screen'>
-      <Header />
-      <div className='flex flex-row flex-grow overflow-hidden'>
-        {/* Sidebar */}
-        <div
-          className={`bg-gray-200 transition-all duration-300 ${
-            collapsed ? 'w-[5%]' : 'w-[13%]'
-          }`}
-        >
-          <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-        </div>
-
-        {/* Main Content */}
-        <div
-          className={`bg-white p-4 overflow-auto scrollbar-hide transition-all duration-300 ${
-            collapsed ? 'w-[95%]' : 'w-[87%]'
-          }`}
-        >
-          <Outlet /> {/* This renders nested routes */}
-        </div>
+    <AntLayout style={{ minHeight: "100vh" }}>
+      {/* Header fixed */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100 }}>
+        <Header />
       </div>
-    </div>
+
+      <AntLayout style={{ marginTop: 50 ,position:"fixed", top:0, bottom:3, left:0, right:0}}> 
+        <Sidebar />
+
+        <Content
+          style={{
+            padding: 5,
+            margin: 0,
+            minHeight: "calc(100vh - 64px)",
+            overflow: "auto",
+            background: "#fff",
+          }}
+        >
+          <Outlet />
+        </Content>
+      </AntLayout>
+    </AntLayout>
   );
 };
 

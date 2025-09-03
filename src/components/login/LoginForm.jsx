@@ -1,4 +1,5 @@
 // src/components/LoginForm.jsx
+import {Button} from 'antd';
 const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPassword }) => (
   <><form onSubmit={onSubmit}>
     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email</label>
@@ -20,9 +21,10 @@ const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPas
        required 
        />
     {error && <p className="text-red-600">{error}</p>}
-    <button type="submit" disabled={loading}
-     className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-    >{loading ? "Logging in..." : "Login"}</button>
+    <Button tdisabled={loading}
+    // type='primary'
+    //  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+    >{loading ? "Logging in..." : "Login"}</Button>
   </form>
   <p className="text-center text-xs mt-4 text-gray-600">
             By signing in, I agree to the <strong>Privacy Policy.</strong>

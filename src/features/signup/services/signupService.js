@@ -15,7 +15,7 @@ export const signUpUser=(userData)=>async(dispatch)=>{
     }
 }
 export const confirm=(confirmData)=>async(dispatch)=>{
-  dispatch(confirmSignUpStart)
+  dispatch(confirmSignUpStart())
     try {
      const response=await axios.post("http://localhost:8088/api/v1/um/confirmSignup",confirmData);
     console.log(response.data);
