@@ -1,39 +1,42 @@
 import React from "react";
-import DataTable from "react-data-table-component";
+import { Table } from "antd";
 
 const VariantTable = ({ data }) => {
   const columns = [
     {
-      name: "Sr. No.",
-      selector: (row, index) => index + 1, 
-      sortable: false,
-      width: "100px",
+      title: "Sr. No.",
+      key: "index",
+      render: (text, record, index) => index + 1,
+      width: 100,
     },
     {
-      name: "Variant ID",
-      selector: row => row.variantId,
-      sortable: true,
+      title: "Variant ID",
+      dataIndex: "variantId",
+      key: "variantId",
+      sorter: (a, b) => a.variantId.localeCompare(b.variantId),
     },
     {
-      name: "Variant Name",
-      selector: row => row.variantName,
-      sortable: true,
+      title: "Variant Name",
+      dataIndex: "variantName",
+      key: "variantName",
+      sorter: (a, b) => a.variantName.localeCompare(b.variantName),
     },
     {
-      name: "Model Name",
-      selector: row => row.modelDto.modelName,
-      sortable: true,
+      title: "Model Name",
+      dataIndex: ["modelDto", "modelName"], // ✅ nested object access
+      key: "modelName",
+      sorter: (a, b) =>
+        (a.modelDto?.modelName || "").localeCompare(b.modelDto?.modelName || ""),
     },
   ];
 
   return (
-    <DataTable
-      
+    <Table
       columns={columns}
-      data={data}
-      pagination
-      highlightOnHover
-      striped
+      dataSource={Array.isArray(data) ? data : []}
+      rowKey="variantId"
+      pagination={{ pageSize: 10 }}
+      bordered
     />
   );
 };

@@ -1,40 +1,50 @@
-import React from "react";
-import DataTable from "react-data-table-component";
+import React, { useState } from "react";
+import { Table, Input } from "antd";
+
+const { Search } = Input;
 
 const VehicleTable = ({ data }) => {
+
+
   const columns = [
-    
     {
-      name: "Vehicle ID",
-      selector: (row) => row.vehicleId,
-      sortable: true,
+      title: "Vehicle ID",
+      dataIndex: "vehicleId",
+      key: "vehicleId",
+      sorter: (a, b) => a.vehicleId.localeCompare(b.vehicleId),
     },
     {
-      name: "Vehicle Name",
-      selector: (row) => row.vehicleName,
-      sortable: true,
+      title: "Vehicle Name",
+      dataIndex: "vehicleName",
+      key: "vehicleName",
+      sorter: (a, b) => a.vehicleName.localeCompare(b.vehicleName),
     },
     {
-      name: "VIN",
-      selector: (row) => row.vin,
-      sortable: true,
+      title: "VIN",
+      dataIndex: "vin",
+      key: "vin",
+      sorter: (a, b) => a.vin.localeCompare(b.vin),
     },
     {
-      name: "Year",
-      selector: (row) => row.year,
-      sortable: true,
+      title: "Year",
+      dataIndex: "year",
+      key: "year",
+      sorter: (a, b) => (a.year || 0) - (b.year || 0),
     },
   ];
 
   return (
-    <DataTable
-      columns={columns}
-      data={Array.isArray(data) ? data : []} // ✅ safe fallback
-      pagination
-      highlightOnHover
-      striped
-      noDataComponent="No vehicles found"
-    />
+    <div>
+    
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="vehicleId"
+        pagination={{ pageSize: 10 }}
+        bordered
+        locale={{ emptyText: "No vehicles found" }}
+      />
+    </div>
   );
 };
 
