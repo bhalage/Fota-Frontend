@@ -5,7 +5,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import { uploadBinary } from "../redux/binarySlice";
 
 const normFile = (e) => {
-  // AntD requires this to properly bind Upload to Form
   if (Array.isArray(e)) {
     return e;
   }
@@ -18,27 +17,52 @@ const NewBinaryDrawer = ({ isOpen, onClose }) => {
 
   const { loading, error } = useSelector((state) => state.binary);
 
+  // const handleSubmit = async (values) => {
+  //   const fileObj = values.file?.[0]?.originFileObj;
+
+  //   if (!fileObj) {
+  //     message.error("Please select a file before submitting.");
+  //     return;
+  //   }
+
+  //   try {
+  //     // ✅ create FormData exactly like Postman
+  //     const formData = new FormData();
+  //     formData.append("file", fileObj); // "file" must match backend key
+  //     formData.append("name", values.name || "CCU"); // optional extra field
+
+  //     await dispatch(uploadBinary(formData)).unwrap();
+
+  //     message.success("File uploaded successfully!");
+  //     form.resetFields();
+  //     onClose();
+  //   } catch (err) {
+  //     console.error("Upload failed:", err);
+  //     message.error("Upload failed!");
+  //   }
+  // };
+
   const handleSubmit = async (values) => {
-    const fileObj = values.file?.[0]?.originFileObj;
+  const fileObj = values.file?.[0]?.originFileObj;
 
-    if (!fileObj) {
-      message.error("Please select a file before submitting.");
-      return;
-    }
+  if (!fileObj) {
+    message.error("Please select a file before submitting.");
+    return;
+  }
 
-    try {
-      await dispatch(
-        uploadBinary({ file: fileObj, fileName: values.name || "CCU" })
-      ).unwrap();
+  try {
+    await dispatch(
+      uploadBinary({ file: fileObj, fileName: values.name || "CCU" })
+    ).unwrap();
 
-      message.success("Vehicle created and file uploaded successfully!");
-      form.resetFields();
-      onClose();
-    } catch (err) {
-      console.error("Upload failed:", err);
-      message.error("Upload failed!");
-    }
-  };
+    message.success("File uploaded successfully!");
+    form.resetFields();
+    onClose();
+  } catch (err) {
+    console.error("Upload failed:", err);
+    message.error("Upload failed!");
+  }
+};
 
   return (
     <Drawer
@@ -63,7 +87,7 @@ const NewBinaryDrawer = ({ isOpen, onClose }) => {
           name="file"
           label="Upload File"
           valuePropName="fileList"
-          getValueFromEvent={normFile}   // ✅ fix: let Form capture Upload files
+          getValueFromEvent={normFile}
           rules={[{ required: true, message: "Please upload a file" }]}
         >
           <Upload beforeUpload={() => false} maxCount={1}>

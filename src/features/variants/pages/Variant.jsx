@@ -18,20 +18,7 @@ const Variant = () => {
   const variantsData = useSelector(selectVariants);
   const loading=useSelector(selectVariantsLoading);
   const error=useSelector(selectVariantsError);
-//   const handleSubmit = async() => {
-//     // e.preventDefault();
 
-//     dispatch(addNewVariant({
-//       "variantName": variant.name,
-//       "description": variant.description,
-//       "modelIdToAddVariant": variant.modelId
-//     }));
-// console.log(variant)
-//     // reset state & close drawer
-//     setVariant({ name: "", description: "", modelId: "" });
-//     setDrawerOpen(false);
-    
-//   };
 
 const handleSubmit = async () => {
   try {
