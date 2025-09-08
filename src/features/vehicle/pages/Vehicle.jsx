@@ -27,7 +27,7 @@ const Vehicle = () => {
       const result = await dispatch(addNewVehicle(vehicle)).unwrap();
       console.log("Vehicle added:", result);
       if (result.status) {
-        setToken(result?.data?.accessToken);
+        setToken(result?.data?.jwtToken);
         setTokenPopupOpen(true);
         setDrawerOpen(false);
         setVehicle({ modelId: "", variantId: "", name: "", year: "" });

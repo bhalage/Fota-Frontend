@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaCarSide,
   FaThList,
@@ -7,14 +7,22 @@ import {
   FaChevronRight,
   FaCloudDownloadAlt,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "antd";
 
 const { Sider } = Layout;
 
-const SidebarSection = ({ icon, title, children = [], routes }) => {
-  const [open, setOpen] = useState(true);
+const SidebarSection = ({ icon, title, children = [], routes, collapsed }) => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // keep section open if current route is inside its children
+  useEffect(() => {
+    if (routes?.children?.some((route) => route === location.pathname)) {
+      setOpen(true);
+    }
+  }, [location.pathname, routes]);
 
   const handleToggleDropdown = () => {
     if (children.length > 0) {
@@ -31,23 +39,28 @@ const SidebarSection = ({ icon, title, children = [], routes }) => {
       >
         <span className="mr-3 text-blue-600">{icon}</span>
         <span className="flex-1 text-left font-medium">{title}</span>
-        {children.length > 0 && (open ?<FaChevronDown />: <FaChevronRight />)}
+        {children.length > 0 && (open ? <FaChevronDown /> : <FaChevronRight />)}
       </button>
 
       {/* Dropdown Children */}
       {open && children.length > 0 && (
         <div className="mt-1 space-y-1 text-sm text-gray-600">
-          {children.map((child, index) => (
-            <div
-              key={index}
-              onClick={() =>
-                routes?.children?.[index] && navigate(routes.children[index])
-              }
-              className="cursor-pointer hover:text-blue-950 py-2 hover:bg-blue-300 rounded-md pl-4"
-            >
-              {child}
-            </div>
-          ))}
+          {children.map((child, index) => {
+            const route = routes?.children?.[index];
+            const isActive = location.pathname === route;
+
+            return (
+              <div
+                key={index}
+                onClick={() => route && navigate(route)}
+                className={`cursor-pointer py-2 pl-4 rounded-md 
+                  hover:text-blue-950 hover:bg-blue-300
+                  ${isActive ? "bg-blue-500 text-white font-semibold" : ""}`}
+              >
+                {child}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -57,6 +70,7 @@ const SidebarSection = ({ icon, title, children = [], routes }) => {
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Sider
@@ -68,10 +82,11 @@ const Sidebar = () => {
       style={{ minHeight: "100vh" }}
     >
       <div className="h-full w-full overflow-y-auto scrollbar-hide p-2 bg-gray-100">
-        {/* Fleet button (no children, direct navigation) */}
+        {/* Fleet button */}
         <div
           onClick={() => navigate("/fleet")}
-          className="text-black font-semibold mb-4 px-2 py-2 text-md flex items-center bg-blue-300 rounded-md cursor-pointer hover:bg-blue-400"
+          className={`text-black font-semibold mb-4 px-2 py-2 text-md flex items-center rounded-md cursor-pointer 
+            ${location.pathname === "/fleet" ? "bg-blue-500 text-white" : "bg-blue-300 hover:bg-blue-400"}`}
         >
           <FaCarSide className="mr-2" />
           {!collapsed && "Fleet"}
@@ -85,30 +100,34 @@ const Sidebar = () => {
             routes={{
               children: ["/vehicles", "/vehicles/groups"],
             }}
+            collapsed={collapsed}
           />
           <SidebarSection
             icon={<FaThList />}
             title={!collapsed && "Models"}
-            children={!collapsed ? ["Vehicle Models", "Model Variants", "ECUs"] : []}
+            children={!collapsed ? ["Vehicle Models", "Model Variants"] : []}
             routes={{
-              children: ["/models/vehicles", "/models/variants", "/models/ecus"],
+              children: ["/models/vehicles", "/models/variants"],
             }}
+            collapsed={collapsed}
           />
-          <SidebarSection
+          {/* <SidebarSection
             icon={<FaDatabase />}
             title={!collapsed && "Inventory"}
             children={!collapsed ? ["Software Packages", "Data Maps", "Log Configs"] : []}
             routes={{
               children: ["/inventory/software", "/inventory/maps", "/inventory/configs"],
             }}
-          />
+            collapsed={collapsed}
+          /> */}
           <SidebarSection
             icon={<FaCloudDownloadAlt />}
             title={!collapsed && "Deployments"}
-            children={!collapsed ? ["Deployments", "CreateRollout", "Upload Binary"] : []}
+            children={!collapsed ? ["Deployments", "Create Rollout", "Upload Binary"] : []}
             routes={{
-              children: ["/deployments", "/createrollout", "/uploadbinary"],
+              children: ["/deployments", "/rollout", "/uploadbinary"],
             }}
+            collapsed={collapsed}
           />
         </nav>
       </div>
