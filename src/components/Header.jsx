@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import fevlogo from '../assets/fevlogo.png';
 import { logout } from '../redux/slice/authSlice';
 import { FiLogOut } from 'react-icons/fi';
+import { Button } from 'antd';
 const Header = () => {
 const dispatch=useDispatch();
   const handleLogout = () => {
@@ -15,10 +16,15 @@ const dispatch=useDispatch();
     
 <div className='bg-blue-950 w-full h-auto flex justify-between items-center px-4 py-2'>
   <img src={fevlogo} alt='fev logo' className='w-24 cursor-pointer' />
-<button onClick={handleLogout} className="flex items-center gap-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
-  <FiLogOut size={20} />
+<Button onClick={handleLogout} 
+type='primary'
+danger
+
+// className="flex items-center gap-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+>
+  <FiLogOut size={15} />
   Logout
-</button>
+</Button>
 </div>
 
     </>

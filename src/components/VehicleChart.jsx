@@ -1,7 +1,7 @@
 // components/VehicleChart.jsx
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
-import DeepLoggerOverview from './DeepLoggerOverview';
+// import DeepLoggerOverview from './DeepLoggerOverview';
 
 const VehicleChart = () => {
   const option = {
@@ -55,7 +55,7 @@ const VehicleChart = () => {
       <h2 className="text-lg font-semibold mb-2">Vehicle Metrics</h2>
       <ReactECharts option={option} style={{ height: '400px', width: '100%' }} />
     </div>
-    <DeepLoggerOverview/>
+    {/* <DeepLoggerOverview/> */}
     </>
     
   );

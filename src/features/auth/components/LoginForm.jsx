@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Button, Form, Input, Typography } from "antd";
+
+const { Text } = Typography;
 
 const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPassword }) => {
   const formik = useFormik({
@@ -8,7 +11,7 @@ const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPas
       email: email || "",
       password: password || "",
     },
-    enableReinitialize: true, // keeps values synced with props
+    enableReinitialize: true,
     validationSchema: Yup.object({
       email: Yup.string()
         .email("Invalid email address")
@@ -18,7 +21,6 @@ const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPas
         .required("Password is required"),
     }),
     onSubmit: (values) => {
-      // update parent states before submit
       setEmail(values.email);
       setPassword(values.password);
       onSubmit(values);
@@ -27,65 +29,66 @@ const LoginForm = ({ onSubmit, loading, error, email, setEmail, password, setPas
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
-        <label
-          htmlFor="email"
-          className="block mb-2 text-sm font-medium text-gray-700"
+      <Form layout="vertical" onFinish={formik.handleSubmit} className="flex flex-col space-y-4">
+        {/* Email */}
+        <Form.Item
+          label="Email"
+          validateStatus={formik.touched.email && formik.errors.email ? "error" : ""}
+          help={formik.touched.email && formik.errors.email ? formik.errors.email : ""}
         >
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          value={formik.values.email}
-          onChange={(e) => {
-            formik.handleChange(e);
-            setEmail(e.target.value);
-          }}
-          onBlur={formik.handleBlur}
-          className="w-full p-2 mb-1 border border-gray-300 rounded"
-        />
-        {formik.touched.email && formik.errors.email ? (
-          <p className="text-red-600 mb-2">{formik.errors.email}</p>
-        ) : <div className="mb-2"></div>}
+          <Input
+            id="email"
+            type="email"
+            value={formik.values.email}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setEmail(e.target.value);
+            }}
+            onBlur={formik.handleBlur}
+            placeholder="Enter your email"
+          />
+        </Form.Item>
 
-        <label
-          htmlFor="password"
-          className="block mb-2 text-sm font-medium text-gray-700"
+        {/* Password */}
+        <Form.Item
+          label="Password"
+          validateStatus={formik.touched.password && formik.errors.password ? "error" : ""}
+          help={formik.touched.password && formik.errors.password ? formik.errors.password : ""}
         >
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          value={formik.values.password}
-          onChange={(e) => {
-            formik.handleChange(e);
-            setPassword(e.target.value);
-          }}
-          onBlur={formik.handleBlur}
-          className="w-full p-2 mb-1 border border-gray-300 rounded"
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <p className="text-red-600 mb-2">{formik.errors.password}</p>
-        ) : <div className="mb-2"></div>}
+          <Input.Password
+            id="password"
+            value={formik.values.password}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setPassword(e.target.value);
+            }}
+            onBlur={formik.handleBlur}
+            placeholder="Enter your password"
+          />
+        </Form.Item>
 
-        {error && <p className="text-red-600 mb-2">{error}</p>}
+        {/* Server-side error */}
+        {error && <Text type="danger">{error}</Text>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+        {/* Submit Button */}
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </Button>
+        </Form.Item>
+      </Form>
 
+      {/* Footer text */}
       <p className="text-center text-xs mt-4 text-gray-600">
         By signing in, I agree to the <strong>Privacy Policy.</strong>
       </p>
       <p className="text-center text-xs mt-4 text-gray-600">
-        Don't have an account{" "}
+        Don&apos;t have an account{" "}
         <Link className="text-blue-500 font-bold" to="/signup">
           Sign Up
         </Link>

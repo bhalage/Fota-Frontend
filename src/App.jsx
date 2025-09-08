@@ -1,37 +1,48 @@
 // App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import UsersPage from './components/users/UsersPage';
-import {VehiclePage} from '@/features/vehicle';
+// import UsersPage from './components/users/UsersPage';
+import { VehiclePage } from '@/features/vehicle';
 import VehicleChart from './components/VehicleChart';
-import CreateRollout from './components/rollout/CreateRollout';
-import{ ModelPage} from '@/features/model';
+// import CreateRollout from './features/rollout/component/CreateRollout';
+import { ModelPage } from '@/features/model';
 import { LoginPage } from "@/features/auth";
 import { SignUpPage } from '@/features/signup';
-import UploadBinary from './containers/UploadBinary';
+import UploadBinary from './features/binary/page/UploadBinary';
 import ConfirmSignup from './features/signup/pages/ConfirmSignup';
-import {VariantPage} from '@/features/variants';
+import { VariantPage } from '@/features/variants';
+import PrivateRoute from './components/PrivateRoute';
+import {Rollout} from '@/features/rollout';
+import NewRollout from './features/rollout/component/NewRollout';
+import VehicleInfo from './features/vehicle/components/VehicleInfo';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Routes without layout */}
+        {/* Public Routes */}
         <Route path="/" element={<LoginPage />} />
-
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path='/confirmsignup' element={<ConfirmSignup/>}/>
-      
-        {/* Routes with layout */}
-        <Route element={<Layout />}>
-          {/* <Route path="/about" element={<About />} /> */}
-          <Route path="/users" element={<UsersPage />} />
+        <Route path='/confirmsignup' element={<ConfirmSignup />} />
+
+        {/* Protected Routes */}
+        <Route
+          element={
+            <PrivateRoute>
+              <Layout />
+            </PrivateRoute>
+          }
+        >
+          {/* <Route path="/users" element={<UsersPage />} /> */}
           <Route path="/vehicles" element={<VehiclePage />} />
           <Route path="/fleet" element={<VehicleChart />} />
-          <Route path="/createrollout" element={<CreateRollout />} />
+          <Route path="/rollout" element={<Rollout />} />
+          <Route path="/rollout/new" element={<NewRollout />} />
           <Route path='/models/vehicles' element={<ModelPage />} />
           <Route path='/models/variants' element={<VariantPage />} />
           <Route path='/uploadbinary' element={<UploadBinary />} />
+          <Route path="/vehicles/:vehicleId" element={<VehicleInfo />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

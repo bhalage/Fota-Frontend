@@ -5,6 +5,7 @@ import VehicleTable from "../components/VehicleTable";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewVehicle, getAllVehicles } from "../services/vehicleService";
 import { selectVehicles } from "../redux/vehicleSelector";
+import { Button } from "antd";
 
 const Vehicle = () => {
   const dispatch = useDispatch();
@@ -24,12 +25,13 @@ const Vehicle = () => {
     e.preventDefault();
     try {
       const result = await dispatch(addNewVehicle(vehicle)).unwrap();
-      if (result?.data?.jwtToken) {
+      console.log("Vehicle added:", result);
+      if (result.status) {
         setToken(result?.data?.jwtToken);
         setTokenPopupOpen(true);
         setDrawerOpen(false);
         setVehicle({ modelId: "", variantId: "", name: "", year: "" });
-      dispatch(getAllVehicles());
+        await dispatch(getAllVehicles());
       }
     } catch (error) {
       console.error("Failed to add vehicle:", error);
@@ -42,14 +44,12 @@ const Vehicle = () => {
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">All Vehicles</h1>
-        <button
-          className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setDrawerOpen(true)}
-        >
+      <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow
+ mb-4">
+        <h1 className="text-xl font-semibold">All Vehicles</h1>
+        <Button type="primary" onClick={() => setDrawerOpen(true)}> 
           + New Vehicle
-        </button>
+        </Button>
       </div>
 
       {/* Vehicle list */}

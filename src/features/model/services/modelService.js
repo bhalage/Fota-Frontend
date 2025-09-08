@@ -23,7 +23,7 @@ export const addNewModel = createAsyncThunk(
     try {
       const resp = await fleetUrl.post("/api/v1/model/addModel", model);
       console.log(resp.data);
-      return resp.data;
+      return resp.data?.data;
     } catch (error) {
       console.error("API error:", error);
       return rejectWithValue(error.response?.data || error.message);

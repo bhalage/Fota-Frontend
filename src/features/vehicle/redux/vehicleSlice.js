@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllVehicles, addNewVehicle } from "../services/vehicleService";
+import { getAllVehicles, addNewVehicle, approveVehicle } from "../services/vehicleService";
  const initialState= {
     vehicleList: null,        
     error: null,
@@ -27,7 +27,15 @@ initialState,
    
       .addCase(addNewVehicle.fulfilled, (state, action) => {
   state.vehicleList.push(action.payload);  // this should append
-});
+})
+// ✅ Approve vehicle
+      .addCase(approveVehicle.fulfilled, (state, action) => {
+        const { vin } = action.payload;
+        const index = state.vehicleList.findIndex((v) => v.vin === vin);
+        if (index !== -1) {
+          state.vehicleList[index].register = "allow"; // mark as onboarded
+        }
+      });
 
   },
 });

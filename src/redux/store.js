@@ -5,6 +5,7 @@ import confirmSignUpReducer from '../features/signup/redux/confirmSignupSlice';
 import {modelReducer} from '@/features/model'
 import { variantReducer } from "@/features/variants";
 import { vehicleReducer } from "@/features/vehicle";
+import binaryReducer from '@/features/binary/redux/binarySlice'
 const store=configureStore({
     reducer:{
         auth:authReducer,
@@ -12,7 +13,8 @@ const store=configureStore({
         confirmSignup:confirmSignUpReducer,
         model:modelReducer,
         variant:variantReducer,
-        vehicles:vehicleReducer
+        vehicles:vehicleReducer,
+        binary:binaryReducer
     },
     middleware:(getDefaultMiddleware) => getDefaultMiddleware(),
 })

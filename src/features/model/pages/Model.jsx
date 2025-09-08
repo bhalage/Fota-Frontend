@@ -4,7 +4,7 @@ import { addNewModel, getAllModels } from '@/features/model/services/modelServic
 import { useDispatch, useSelector } from 'react-redux';
 import { selectModels } from '@/features/model/redux/modelSelector';
 import ModelTable from '../components/ModelTable';
-
+import {Button} from 'antd';
 const Model = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [name, setName] = useState("");
@@ -25,22 +25,30 @@ const Model = () => {
     console.log("Models updated:", modelsData);
   }, [modelsData]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // e.preventDefault();
     console.log("Adding model:", name);
     dispatch(addNewModel({ modelName: name }));
+    setDrawerOpen(false);
+    setName("");
   };
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow mb-4">
         <h1 className="text-2xl font-semibold">All Model</h1>
-        <button
+        {/* <button
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           onClick={() => setDrawerOpen(true)}
         >
           + New Model
-        </button>
+        </button> */}
+        <Button
+          type="primary"
+          onClick={() => setDrawerOpen(true)}
+        >
+          + New Vehicle Model
+        </Button>
       </div>
 
       {loading && <p>Loading models...</p>}

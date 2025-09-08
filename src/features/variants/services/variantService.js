@@ -7,7 +7,8 @@ export const getVariants = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const resp = await fleetUrl.get("/api/v1/variant/getAllVariant");
-      return resp.data;
+      // return resp.data;
+       return resp.data?.data || resp.data || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch variant data");
     }
@@ -20,7 +21,7 @@ export const addNewVariant = createAsyncThunk(
   async (variant, { rejectWithValue }) => {
     try {
       const resp = await fleetUrl.post("/api/v1/variant/addVariant", variant);
-      return resp.data;
+      return resp.data?.data;
     } catch (error) {
       return rejectWithValue({
         message: error.message,
