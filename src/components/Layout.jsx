@@ -7,12 +7,7 @@ import { useEffect } from "react";
 const { Content } = AntLayout;
 
 const Layout = () => {
-  // useEffect(() => {
-  //   const idToken = localStorage.getItem("idToken");
-  //   if (!idToken) {
-  //     navigate("/"); 
-  //   }
-  // }, [navigate]);
+  
   return (
     <AntLayout style={{ minHeight: "100vh" }}>
       {/* Header fixed */}
@@ -20,7 +15,7 @@ const Layout = () => {
         <Header />
       </div>
 
-      <AntLayout style={{ marginTop: 50 ,position:"fixed", top:0, bottom:3, left:0, right:0}}> 
+      <AntLayout style={{ marginTop: 45 ,position:"fixed", top:0, bottom:3, left:0, right:0}}> 
         <Sidebar />
 
         <Content

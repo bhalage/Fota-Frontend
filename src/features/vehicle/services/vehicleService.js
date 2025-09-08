@@ -34,3 +34,20 @@ export const addNewVehicle = createAsyncThunk(
     }
   }
 );
+export const approveVehicle = createAsyncThunk(
+  "vehicles/approveVehicle",
+  async (vin, { rejectWithValue }) => {
+    try {
+      console.log("Approving vehicle with VIN:", vin);
+      const resp = await fleetUrl.post(`/api/v1/vehicle/${vin}/approve`);
+      return { vin, message: resp.data }; // keep vin in payload
+    } catch (error) {
+      console.error("Error approving vehicle:", error);
+      return rejectWithValue(
+        
+        error.response?.data?.message || error.message || "Failed to approve vehicle"
+        
+      );
+    }
+  }
+);
