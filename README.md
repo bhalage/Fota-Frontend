@@ -1,12 +1,75 @@
-# React + Vite
+# Fota-Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based frontend for managing models and variants in the FOTA (Firmware Over-The-Air) system.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+Fota-Frontend/
+├── public/
+│   └── ...                # Static assets
+├── src/
+│   ├── app/               # App-level configuration
+│   ├── features/
+│   │   ├── model/         # Model-related Redux logic and components
+│   │   └── variants/      # Variant-related Redux logic and components
+│   │       └── components/
+│   │           └── NewVariantDrawer.jsx
+│   ├── assets/            # Images, icons, etc.
+│   ├── components/        # Shared UI components
+│   ├── utils/             # Utility functions
+│   └── index.js           # App entry point
+├── package.json
+├── README.md
+└── ...                    # Other config files
+```
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js v20.19.5
+- npm v10.8.2
+- React Js ^19.1.0
+
+### Installation
+
+```bash
+npm install
+
+### Running the App
+
+```bash
+npm run dev
+```
+
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+## Features
+
+- Model and variant management
+- Drawer-based UI for creating new variants
+- Form validation with Formik and Yup
+- Redux for state management
+- Ant Design for UI components
+## UI Libraries Used
+
+- **Ant Design (`antd`)**: Modern React UI components for building user interfaces.
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+- **Lucide React**: Icon library for React.
+- **React Icons**: Popular icon packs for React.
+- **Echarts & echarts-for-react**: Charting and visualization components.
+
+
+
+## Folder Details
+
+- **src/features/model/**: Redux logic and components for models
+- **src/features/variants/**: Redux logic and components for variants
+- **src/features/variants/components/NewVariantDrawer.jsx**: Drawer component for creating/editing variants
+
