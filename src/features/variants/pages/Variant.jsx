@@ -63,9 +63,9 @@ const handleSubmit = async () => {
           + New Vehicle Variant
         </Button>
       </div>
-    {loading && <p>Loading Variants....</p>}
+    
     {error && <p className='text-red-500'>Error:{error}</p>}
-    <VariantTable data={variantsData || []} />
+    <VariantTable data={variantsData || []} loading={loading}/>
 
       {/* {loading ?<>Variant Loading...</>:<VariantTable data={variantsData || []} />} */}
 

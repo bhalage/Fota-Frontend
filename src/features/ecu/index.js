@@ -1,0 +1,1 @@
+export {default as EcuPages} from './pages/EcuPages';

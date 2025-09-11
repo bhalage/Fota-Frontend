@@ -105,9 +105,9 @@ const Sidebar = () => {
           <SidebarSection
             icon={<FaThList />}
             title={!collapsed && "Models"}
-            children={!collapsed ? ["Vehicle Models", "Model Variants"] : []}
+            children={!collapsed ? ["Vehicle Models", "Model Variants","ECU"] : []}
             routes={{
-              children: ["/models/vehicles", "/models/variants"],
+              children: ["/models", "/variants","/ecu"],
             }}
             collapsed={collapsed}
           />

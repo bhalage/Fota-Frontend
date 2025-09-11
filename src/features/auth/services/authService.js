@@ -11,8 +11,13 @@ export const loginUser = (credentials) => async (dispatch) => {
     localStorage.setItem("idToken", idToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    dispatch(loginSuccess({ accessToken, idToken, refreshToken }));
+   if(response.data.success){
+     dispatch(loginSuccess({ accessToken, idToken, refreshToken }));
+   }else{
+    dispatch(loginFailure("Incorrect Username or Password"));
+   }
   } catch (error) {
+    console.log(error)
     dispatch(loginFailure(error.response?.data?.message || "Login Failed"));
   }
 };

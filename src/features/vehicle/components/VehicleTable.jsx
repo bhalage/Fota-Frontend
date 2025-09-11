@@ -1,32 +1,20 @@
-import React from "react";
-import { Table, Tag } from "antd";
+import React, { useState } from "react";
+import { Input, Table, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import { SearchOutlined} from "@ant-design/icons";
+import { useSelector } from "react-redux";
 const VehicleTable = ({ data }) => {
   const navigate = useNavigate();
-
+  const [searchText, setSearchText] = useState("");
+const loading=useSelector((state)=>state.vehicles.loading);
   const columns = [
-    {
-      title: "Vehicle ID",
-      dataIndex: "vehicleId",
-      key: "vehicleId",
-      sorter: (a, b) => a.vehicleId - b.vehicleId,
-    },
+
     {
       title: "Vehicle Name",
       dataIndex: "vehicleName",
       key: "vehicleName",
       sorter: (a, b) => a.vehicleName.localeCompare(b.vehicleName),
     },
-    // {
-    //   title: "VIN",
-    //   dataIndex: "vin",
-    //   key: "vin",
-    //   sorter: (a, b) => a.vin.localeCompare(b.vin),
-    //   render: (vin, record) => (
-    //     <a onClick={() => navigate(`/vehicles/${record.vin}`)}>{vin}</a>
-    //   ),
-    // },
     {
   title: "VIN",
   dataIndex: "vin",
@@ -62,20 +50,6 @@ const VehicleTable = ({ data }) => {
           b.variantDto?.variantName || ""
         ),
     },
-  //   {
-  //     title: "Status",
-  //     key: "register",
-  //    render: (record) => (
-  //   <Tag color={record.register === "allow" ? "green" : "red"}  style={{ minWidth: 75, textAlign: "center" }}>
-  //     {record.register === "allow" ? "On Boarded" : "Pending"}
-  //   </Tag>
-  // ),
-  //     sorter: (a, b) =>
-  //       (a.variantDto?.variantName || "").localeCompare(
-  //         b.variantDto?.variantName || ""
-  //       ),
-  //   },
-
   {
   title: "Status",
   key: "register",
@@ -120,6 +94,27 @@ const VehicleTable = ({ data }) => {
         columns={columns}
         dataSource={data}
         rowKey="vehicleId"
+        loading={loading}
+        title={() => (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {/* Search Input */}
+          <Input
+            placeholder="Search Vehicles"
+            prefix={<SearchOutlined/>}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 300 }}
+          />
+
+          
+        </div>
+      )}
         pagination={{ pageSize: 10 }}
         bordered
         locale={{ emptyText: "No vehicles found" }}

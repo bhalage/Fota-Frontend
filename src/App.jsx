@@ -15,6 +15,8 @@ import PrivateRoute from './components/PrivateRoute';
 import {Rollout} from '@/features/rollout';
 import NewRollout from './features/rollout/component/NewRollout';
 import VehicleInfo from './features/vehicle/components/VehicleInfo';
+import { EcuPages } from '@/features/ecu';
+import ModelInfo from './features/model/components/ModelInfo';
 
 function App() {
   return (
@@ -38,10 +40,13 @@ function App() {
           <Route path="/fleet" element={<VehicleChart />} />
           <Route path="/rollout" element={<Rollout />} />
           <Route path="/rollout/new" element={<NewRollout />} />
-          <Route path='/models/vehicles' element={<ModelPage />} />
-          <Route path='/models/variants' element={<VariantPage />} />
+          <Route path='/models' element={<ModelPage />} />
+          <Route path="/models/:modelName" element={<ModelInfo />} />
+          <Route path='/variants' element={<VariantPage />} />
+          <Route path='/ecu' element={<EcuPages/>} />
           <Route path='/uploadbinary' element={<UploadBinary />} />
           <Route path="/vehicles/:vehicleId" element={<VehicleInfo />} />
+
 
         </Route>
       </Routes>
