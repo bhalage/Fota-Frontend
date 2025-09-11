@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getAllVehicles, addNewVehicle, approveVehicle } from "../services/vehicleService";
  const initialState= {
-    vehicleList: null,        
+    vehicleList: null,
+    loading: false,        
     error: null,
   }
 const vehicleSlice = createSlice({

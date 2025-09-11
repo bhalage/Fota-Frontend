@@ -37,12 +37,7 @@ const Model = () => {
     <div className="relative">
       <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow mb-4">
         <h1 className="text-2xl font-semibold">All Model</h1>
-        {/* <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setDrawerOpen(true)}
-        >
-          + New Model
-        </button> */}
+        
         <Button
           type="primary"
           onClick={() => setDrawerOpen(true)}
@@ -51,9 +46,9 @@ const Model = () => {
         </Button>
       </div>
 
-      {loading && <p>Loading models...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
-      <ModelTable data={modelsData || []} />
+      {/* {loading && <p>Loading models...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>} */}
+      <ModelTable data={modelsData || []} loading={loading}/>
 
       <NewModelDrawer
         isOpen={isDrawerOpen}

@@ -1,0 +1,72 @@
+import { addNewEcu, attachEcuToModel, getAllEcus,getEcusByModelId } from "../services/ecuService";
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState={
+    ecus:null,
+    loading:false,
+    error:null,
+    ecusByModelId:[],
+    message:""
+}
+const ecuSlice=createSlice({
+    name:"ecu",
+    initialState,
+    reducers:{},
+    extraReducers:(builder)=>{
+        builder
+        .addCase(getAllEcus.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(getAllEcus.fulfilled,(state,action)=>{
+            state.loading=false;
+            state.ecus=action.payload;
+        })
+        .addCase(getAllEcus.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
+        })
+        .addCase(addNewEcu.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(addNewEcu.fulfilled,(state,action)=>{
+            state.loading=false;
+            if(state.ecus){
+                state.ecus.push(action.payload);
+            }else{
+                state.ecus=[action.payload];
+            }
+        })
+        .addCase(addNewEcu.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
+        })
+        .addCase(getEcusByModelId.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(getEcusByModelId.fulfilled,(state,action)=>{
+            state.loading=false;
+            state.ecusByModelId=action.payload;
+        })
+        .addCase(getEcusByModelId.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
+            state.ecusByModelId=[]; 
+        })
+        .addCase(attachEcuToModel.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(attachEcuToModel.fulfilled,(state,action)=>{
+            state.loading=false;
+            state.message=action.payload;
+        })
+        .addCase(attachEcuToModel.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
+        })
+    },
+})
+export default ecuSlice.reducer

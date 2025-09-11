@@ -1,7 +1,8 @@
-import React from "react";
-import { Table } from "antd";
-
-const VariantTable = ({ data }) => {
+import React, { useState } from "react";
+import { Table,Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+const VariantTable = ({ data ,loading}) => {
+  const [searchText, setSearchText] = useState("");
   const columns = [
     {
       title: "Sr. No.",
@@ -37,6 +38,25 @@ const VariantTable = ({ data }) => {
       rowKey="variantId"
       pagination={{ pageSize: 10 }}
       bordered
+      loading={loading}  
+        title={() => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Search Input */}
+            <Input
+              placeholder="Search Variant"
+              prefix={<SearchOutlined />}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </div>
+        )}
     />
   );
 };
