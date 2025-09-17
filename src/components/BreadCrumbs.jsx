@@ -28,7 +28,7 @@ const Breadcrumbs = () => {
     };
   });
 
-  return <Breadcrumb items={breadcrumbItems} className="mb-4 px-4 py-2" />;
+  return <Breadcrumb items={breadcrumbItems} className="mb-4 px-4 py-2 shadow" />;
 };
 
 export default Breadcrumbs;

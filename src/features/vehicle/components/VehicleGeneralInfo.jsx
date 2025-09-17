@@ -44,7 +44,7 @@ const VehicleGeneralInfo = () => {
   }
 
   return (
-    <div style={{ paddingTop: "20px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <Collapse
         defaultActiveKey={["1"]}
         expandIconPosition="end"

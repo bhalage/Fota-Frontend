@@ -7,6 +7,7 @@ import { variantReducer } from "@/features/variants";
 import { vehicleReducer } from "@/features/vehicle";
 import binaryReducer from '@/features/binary/redux/binarySlice'
 import ecuReducer from "../features/ecu/redux/ecuSlice";
+import rolloutSlice from "@/features/rollout/redux/rolloutSlice";
 const store=configureStore({
     reducer:{
         auth:authReducer,
@@ -16,7 +17,8 @@ const store=configureStore({
         variant:variantReducer,
         vehicles:vehicleReducer,
         binary:binaryReducer,
-        ecu:ecuReducer
+        ecu:ecuReducer,
+        rollout:rolloutSlice
     },
     middleware:(getDefaultMiddleware) => getDefaultMiddleware(),
 })
