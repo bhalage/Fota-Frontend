@@ -22,11 +22,20 @@ const ECUManagementTable = ({data,loading}) => {
     { title: "ECU Variant Name", dataIndex: "ecuVariantName", key: "ecuVariantName" },
   ];
 
+  const filteredData=useMemo(()=>{
+    if (!searchText||searchText.trim()===""){
+      return data;
+    }
+    return data.filter(item=>
+    item.ecuName.toLowerCase().includes(searchText.toLowerCase())
+  )
+  }, [data, searchText]);
+
   return (
     <Table
       bordered
       columns={columns}
-      dataSource={data}
+      dataSource={filteredData}
       rowKey="componentId"
       
       title={() => (

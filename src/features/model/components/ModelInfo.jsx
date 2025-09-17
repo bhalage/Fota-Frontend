@@ -1,10 +1,9 @@
 import Breadcrumbs from '@/components/Breadcrumbs';  // ✅ Ensure correct filename
-import { addNewEcu, attachEcuToModel, getEcusByModelId } from '@/features/ecu/services/ecuService';
+import { attachEcuToModel, getEcusByModelId } from '@/features/ecu/services/ecuService';
 import { Button, Col, Collapse, Row, Table, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import NewEcuDrawer from '@/features/ecu/components/NewEcuDrawer'; // ✅ import drawer
 import SelectEcuDrawer from './SelectEcuDrawer';
 
 const { Panel } = Collapse;
@@ -20,7 +19,6 @@ const ModelInfo = () => {
   const loading = useSelector((state) => state.ecu.loading);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
-  // ✅ Fetch ECUs for this model
   useEffect(() => {
     if (model?.modelId) {
       dispatch(getEcusByModelId(model.modelId));
@@ -47,20 +45,22 @@ const ModelInfo = () => {
   ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <div className="border-b pb-2">
+    <div >
+      <div >
         <Breadcrumbs />
       </div>
 
-      <div style={{ paddingTop: "20px" }}>
+      <div style={{ paddingTop: "10px" }}>
         <Collapse
-          defaultActiveKey={["1","2"]}
-          expandIconPosition="end"
+          activeKey={["1","2"]}
           bordered
-          style={{ background: "#fafafa", borderRadius: "8px" }}
+          style={{ background: "#fafafa", borderRadius: "8px", boxShadow: "0 2px 8px #f0f1f2" ,cursor:"auto"}}
+          collapsible="disabled"
+          
+          
         >
           {/* ✅ Panel 1 */}
-          <Panel header="Model Information" showArrow={false} key="1">
+          <Panel header={<h3 style={{ margin: 0, fontWeight: 600, fontSize: "16px",color:"black",cursor:"auto" }}>Model Information</h3>} showArrow={false} key="1">
             <Row gutter={[16, 16]}>
               <Col span={12}>
                 <Text strong>Model Id:</Text> {model?.modelId || "N/A"}
@@ -71,10 +71,11 @@ const ModelInfo = () => {
             </Row>
           </Panel>
 
-          {/* ✅ Panel 2 with Drawer */}
+          
           <Panel
             key="2"
             showArrow={false}
+            
             header={
               <div
                 style={{
@@ -82,9 +83,10 @@ const ModelInfo = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   width: "100%",
+                  cursor:"auto"
                 }}
               >
-                <h3 style={{ margin: 0 }}>ECUs Available</h3>
+                <h3 style={{ margin: 0, fontWeight: 600, fontSize: "16px",color:"black",cursor:"auto" }}>ECUs Available</h3>
                 <Button type="primary" onClick={() => setDrawerOpen(true)}>
                   + New ECU
                 </Button>
@@ -103,7 +105,7 @@ const ModelInfo = () => {
         </Collapse>
       </div>
 
-      {/* ✅ Drawer Component */}
+     
       <SelectEcuDrawer
         isOpen={isDrawerOpen}
         onClose={() => setDrawerOpen(false)}

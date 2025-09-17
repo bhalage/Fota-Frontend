@@ -8,7 +8,8 @@ import {
   FaCloudDownloadAlt,
 } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
+
 
 const { Sider } = Layout;
 
@@ -39,7 +40,7 @@ const SidebarSection = ({ icon, title, children = [], routes, collapsed }) => {
       >
         <span className="mr-3 text-blue-600">{icon}</span>
         <span className="flex-1 text-left font-medium">{title}</span>
-        {children.length > 0 && (open ? <FaChevronDown /> : <FaChevronRight />)}
+        {children.length > 0 && (open ? <FaChevronDown size={10} color="gray"/> : <FaChevronRight size={10} color="gray"/>)}
       </button>
 
       {/* Dropdown Children */}
@@ -53,7 +54,7 @@ const SidebarSection = ({ icon, title, children = [], routes, collapsed }) => {
               <div
                 key={index}
                 onClick={() => route && navigate(route)}
-                className={`cursor-pointer py-2 pl-4 rounded-md 
+                className={`cursor-pointer py-2 pl-4  
                   hover:text-blue-950 hover:bg-blue-300
                   ${isActive ? "bg-blue-500 text-white font-semibold" : ""}`}
               >
@@ -78,14 +79,15 @@ const Sidebar = () => {
       collapsed={collapsed}
       onCollapse={setCollapsed}
       width={220}
-      theme="light"
+      theme="dark"
       style={{ minHeight: "100vh" }}
     >
-      <div className="h-full w-full overflow-y-auto scrollbar-hide p-2 bg-gray-100">
-        {/* Fleet button */}
+      
+      <div className="h-full w-full overflow-y-auto scrollbar-hide py-2 bg-gray-100">
+       
         <div
           onClick={() => navigate("/fleet")}
-          className={`text-black font-semibold mb-4 px-2 py-2 text-md flex items-center rounded-md cursor-pointer 
+          className={`text-black font-semibold mb-4 px-2 py-2 text-md flex items-center cursor-pointer 
             ${location.pathname === "/fleet" ? "bg-blue-500 text-white" : "bg-blue-300 hover:bg-blue-400"}`}
         >
           <FaCarSide className="mr-2" />
@@ -123,13 +125,14 @@ const Sidebar = () => {
           <SidebarSection
             icon={<FaCloudDownloadAlt />}
             title={!collapsed && "Deployments"}
-            children={!collapsed ? ["Deployments", "Create Rollout", "Upload Binary"] : []}
+            children={!collapsed ? ["Deployments", "Rollout", "Upload Binary"] : []}
             routes={{
               children: ["/deployments", "/rollout", "/uploadbinary"],
             }}
             collapsed={collapsed}
           />
         </nav>
+        
       </div>
     </Sider>
   );

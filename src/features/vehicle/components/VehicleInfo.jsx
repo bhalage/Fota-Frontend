@@ -12,8 +12,8 @@ const VehicleInfo = () => {
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-        <div className="border-b pb-2">
+    <div>
+        <div className="">
 
         <Breadcrumbs/>
         </div>

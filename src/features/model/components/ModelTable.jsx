@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Input, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 
@@ -32,12 +32,19 @@ const ModelTable = ({ data, loading }) => {
 
     },
   ];
+const filteredData=useMemo(()=>{
+  if(!searchText || searchText.trim()===""){
+    return data;
+  }
+  const lower=searchText.toLowerCase();
 
+  return data.filter((item)=>(item.modelName.toLowerCase().includes(lower)));
+},[data,searchText]);
   return (
     <div>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         rowKey="modelId"
         pagination={{ pageSize: 10 }}
         bordered
