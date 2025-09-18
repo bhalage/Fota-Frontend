@@ -1,7 +1,6 @@
 import fleetUrl from "@/fleetUrl";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ fetch all models
 export const getAllModels = createAsyncThunk(
   "model/getAllModels",
   async (_, { rejectWithValue }) => {
@@ -11,12 +10,12 @@ export const getAllModels = createAsyncThunk(
       return resp.data?.data || resp.data || [];
     } catch (error) {
       console.error("API error:", error);
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(error);
     }
   }
 );
 
-// ✅ add new model
+
 export const addNewModel = createAsyncThunk(
   "model/addNewModel",
   async (model, { rejectWithValue }) => {

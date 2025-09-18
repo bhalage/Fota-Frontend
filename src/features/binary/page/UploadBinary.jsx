@@ -9,10 +9,16 @@ import { fetchBinaries } from '../redux/binarySlice';
 const UploadBinary = () => {
   const [isDrawerOpen, setDrawerOpen] = useState (false);
   const { binaries } = useSelector((state) => state.binary);
+  const {error}= useSelector(state => state.binary);
   const dispatch=useDispatch();
   useEffect(() => {
   dispatch(fetchBinaries());
 }, [dispatch]);
+
+
+if(error){
+  throw new Error(error)
+}
 
 useEffect(() => {
   console.log("Binaries from Redux:", binaries);

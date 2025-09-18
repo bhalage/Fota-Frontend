@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs';  // ✅ Ensure correct filename
 import { attachEcuToModel, getEcusByModelId } from '@/features/ecu/services/ecuService';
 import { Button, Col, Collapse, Row, Table, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import SelectEcuDrawer from './SelectEcuDrawer';
@@ -115,4 +115,4 @@ const ModelInfo = () => {
   );
 };
 
-export default ModelInfo;
+export default memo(ModelInfo);

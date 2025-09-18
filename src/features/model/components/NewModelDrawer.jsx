@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Drawer, Form, Input, Button } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -63,4 +63,4 @@ const NewModelDrawer = ({ isOpen, onClose, name, setName, handleSubmit }) => {
   );
 };
 
-export default NewModelDrawer;
+export default memo(NewModelDrawer);

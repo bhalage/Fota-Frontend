@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import fleetUrl from "@/fleetUrl";
 
-// Get all vehicles
+
 export const getAllVehicles = createAsyncThunk(
   "vehicles/getAllVehicles",
   async (_, { rejectWithValue }) => {
     try {
       const resp = await fleetUrl.get("/api/v1/vehicle/getAllVehicle");
-      // ✅ unwrap data properly
+     
       return resp.data?.data || resp.data || [];
     } catch (error) {
       return rejectWithValue(
@@ -17,7 +17,7 @@ export const getAllVehicles = createAsyncThunk(
   }
 );
 
-// Add new vehicle
+
 export const addNewVehicle = createAsyncThunk(
   "vehicles/addNewVehicle",
   async (vehicle, { rejectWithValue }) => {
@@ -40,7 +40,7 @@ export const approveVehicle = createAsyncThunk(
     try {
       console.log("Approving vehicle with VIN:", vin);
       const resp = await fleetUrl.post(`/api/v1/vehicle/${vin}/approve`);
-      return { vin, message: resp.data }; // keep vin in payload
+      return { vin, message: resp.data }; 
     } catch (error) {
       console.error("Error approving vehicle:", error);
       return rejectWithValue(

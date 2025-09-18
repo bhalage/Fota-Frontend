@@ -11,6 +11,7 @@ const EcuPages = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.ecu.loading);
   const data = useSelector((state) => state.ecu.ecus);
+  const error = useSelector((state) => state.ecu.error);
 
   useEffect(() => {
     dispatch(getAllEcus());
@@ -18,12 +19,16 @@ const EcuPages = () => {
 
   useEffect(() => {
     console.log("ECUs updated:", data);
-  }, [data]);
+    console.log("Error state:", error);
+  }, [data,error]);
+  if(error){
+    throw new Error(error);
+  }
 
   const handleSubmit = (values) => {
     console.log("Submitting new ECU:", values);
     dispatch(addNewEcu(values)).then(() => {
-      dispatch(getAllEcus()); // ✅ refresh table after add
+      dispatch(getAllEcus()); 
     });
   };
 

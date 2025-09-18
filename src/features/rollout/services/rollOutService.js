@@ -8,7 +8,7 @@ export const getRollouts = createAsyncThunk(
         const resp = await fleetUrl.get("/api/v1/getAllRollout");
         return resp.data?.data || resp.data || [];
       } catch (error) {
-        return rejectWithValue(error.response?.data || "Failed to fetch rollout data");
+        return rejectWithValue(error);
       }
     })
 export const createRollout = createAsyncThunk(

@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import React, { useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { Input, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 
@@ -57,7 +57,7 @@ const filteredData=useMemo(()=>{
               alignItems: "center",
             }}
           >
-            {/* Search Input */}
+           
             <Input
               placeholder="Search Model"
               prefix={<SearchOutlined />}
@@ -72,4 +72,4 @@ const filteredData=useMemo(()=>{
   );
 };
 
-export default ModelTable;
+export default memo(ModelTable);

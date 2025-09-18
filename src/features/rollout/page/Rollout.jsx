@@ -14,7 +14,9 @@ const Rollout = () => {
     dispatch(getRollouts());
   }, [dispatch]);
 
-  // ✅ Sort latest first (by createdAt or by id if needed)
+  if(error){
+    throw new Error(error)
+  }
   const sortedData = useMemo(() => {
     if (!data) return [];
     return [...data].sort(
@@ -35,7 +37,7 @@ const Rollout = () => {
             Create New Rollout
           </Button>
         </div>
-        {/* Pass sorted data to table */}
+       
         <RolloutTable loading={loading} data={sortedData} />
       </div>
     </div>

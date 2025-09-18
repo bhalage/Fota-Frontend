@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, memo } from "react";
 import { Drawer, Input, Checkbox, Button, Divider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,14 +23,14 @@ const SelectEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
         );
     }, [ecus, searchText]);
 
-    // Handle checkbox toggle
+   
     const handleToggle = (ecuId) => {
         setSelectedEcus((prev) =>
             prev.includes(ecuId) ? prev.filter((id) => id !== ecuId) : [...prev, ecuId]
         );
     };
 
-    // Handle select all / deselect all
+    
     const handleSelectAll = () => {
         setSelectedEcus(filteredEcus?.map((ecu) => ecu.ecuId));
     };
@@ -64,7 +64,7 @@ const SelectEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
                 </div>
             }
         >
-            {/* Search bar */}
+            
             <Input
                 placeholder="Search ECU Model"
                 prefix={<SearchOutlined />}
@@ -73,7 +73,7 @@ const SelectEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
                 style={{ marginBottom: 16 }}
             />
 
-            {/* Selected info */}
+          
             <div style={{ marginBottom: 8, display: "flex", justifyContent: "space-between" }}>
                 <span>
                     Selected: {selectedEcus.length} ECUs
@@ -86,7 +86,7 @@ const SelectEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
 
             <Divider style={{ margin: "8px 0" }} />
 
-            {/* ECU List with checkboxes */}
+            
             <div style={{ maxHeight: "60vh", overflowY: "auto", paddingRight: 8 }}>
                 {filteredEcus?.map((ecu) => (
                     <div
@@ -118,4 +118,4 @@ const SelectEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
     );
 };
 
-export default SelectEcuDrawer;
+export default memo(SelectEcuDrawer);

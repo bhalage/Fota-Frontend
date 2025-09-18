@@ -10,6 +10,7 @@ export const getAllEcus = createAsyncThunk(
             return resp.data || [];
         } catch (error) {
             console.error("API error:", error);
+            
             return rejectWithValue(error.message);
         }
     }
@@ -33,16 +34,17 @@ export const getEcusByModelId = createAsyncThunk(
         try {
             const resp = await fleetUrl.get(`/api/v1/ecu/${modelId}`);
 
-            // return Array.isArray(resp.data) ? resp.data : [];
+           
             if (Array.isArray(resp.data)) {
                 return resp.data.filter(
-                    ecu => ecu.ecuName && ecu.ecuName.trim() !== "" // only keep valid ECUs
+                    ecu => ecu.ecuName && ecu.ecuName.trim() !== "" 
                 );
             }
             return [];
         }
         catch (error) {
             console.error("API error:", error);
+            throw new Error("Failed to fetch ECUs for the model.");
             return rejectWithValue(error.message);
         }
     })
