@@ -3,16 +3,18 @@ import React, { memo, useMemo, useState } from "react";
 import { Input, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 
+
 const ModelTable = ({ data, loading }) => {
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
+  console.log(data)
   const columns = [
-    {
-      title: "Model ID",
-      dataIndex: "modelId",
-      key: "modelId",
-      sorter: (a, b) => a.modelId.localeCompare(b.modelId),
-    },
+    // {
+    //   title: "Model ID",
+    //   dataIndex: "modelId",
+    //   key: "modelId",
+    //   sorter: (a, b) => a.modelId.localeCompare(b.modelId),
+    // },
     {
       title: "Model Name",
       dataIndex: "modelName",
@@ -30,7 +32,16 @@ const ModelTable = ({ data, loading }) => {
       )
 
 
+    },{
+      title:"Model Variants",
+      dataIndex:"variantCount",
+      key:"variantCount"
     },
+    {
+      title:"Vehicle Count",
+      dataIndex:"vehicleCount",
+      key:"vehicleCount"
+    }
   ];
 const filteredData=useMemo(()=>{
   if(!searchText || searchText.trim()===""){

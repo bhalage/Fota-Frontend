@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Table,Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+
 const VariantTable = ({ data ,loading}) => {
   const [searchText, setSearchText] = useState("");
-  const columns = [
+  const baseColumns = [
     {
       title: "Sr. No.",
       key: "index",
@@ -23,13 +24,28 @@ const VariantTable = ({ data ,loading}) => {
       sorter: (a, b) => a.variantName.localeCompare(b.variantName),
     },
     {
-      title: "Model Name",
-      dataIndex: ["modelDto", "modelName"], // ✅ nested object access
-      key: "modelName",
-      sorter: (a, b) =>
-        (a.modelDto?.modelName || "").localeCompare(b.modelDto?.modelName || ""),
+      title: "Description",
+      dataIndex: "description",
+      key: "variantName",
+      sorter: (a, b) => a.variantName.localeCompare(b.variantName),
     },
+    
   ];
+  const hasModelName = Array.isArray(data) && data.some(d => d.modelDto?.modelName);
+
+  
+  const columns = hasModelName
+    ? [
+        ...baseColumns,
+        {
+          title: "Model Name",
+          dataIndex: ["modelDto", "modelName"],
+          key: "modelName",
+          sorter: (a, b) =>
+            (a.modelDto?.modelName || "").localeCompare(b.modelDto?.modelName || ""),
+        },
+      ]
+    : baseColumns;
 
   return (
     <Table
@@ -47,7 +63,7 @@ const VariantTable = ({ data ,loading}) => {
               alignItems: "center",
             }}
           >
-            {/* Search Input */}
+           
             <Input
               placeholder="Search Variant"
               prefix={<SearchOutlined />}

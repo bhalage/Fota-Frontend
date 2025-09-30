@@ -1,7 +1,7 @@
 import fleetUrl from "@/fleetUrl";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ fetch all variants
+
 export const getVariants = createAsyncThunk(
   "variant/getVariants",
   async (_, { rejectWithValue }) => {
@@ -15,7 +15,6 @@ export const getVariants = createAsyncThunk(
   }
 );
 
-// ✅ add new variant
 export const addNewVariant = createAsyncThunk(
   "variant/addNewVariant",
   async (variant, { rejectWithValue }) => {
@@ -32,3 +31,21 @@ export const addNewVariant = createAsyncThunk(
     }
   }
 );
+
+export const getAllVariantsByModelId=createAsyncThunk(
+  "variant/getAllVariantsByModelId",
+  async(id,{rejectWithValue} )=>{
+try {
+  const resp=await fleetUrl.get(`api/v1/variant/getAllVariantsByModelId/${id}`);
+  console.log(resp.data);
+  return resp.data?.data;
+} catch (error) {
+  return rejectWithValue({
+    message: error.message,
+        code: error.code,
+        status: error.response?.status,
+        data: error.response?.data
+  })
+}
+  }
+)

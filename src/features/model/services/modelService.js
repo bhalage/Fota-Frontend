@@ -14,6 +14,19 @@ export const getAllModels = createAsyncThunk(
     }
   }
 );
+export const getAllModelsWithcount=createAsyncThunk(
+  "model/getAllModelsWithCount",
+  async(_,{rejectWithValue})=>{
+    try {
+      const resp= await fleetUrl.get("/api/v1/model/getAllModelwithCount")
+      console.log(resp.data);
+      return resp.data?.data;
+    } catch (error) {
+      console.error("API Error",error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+)
 
 
 export const addNewModel = createAsyncThunk(
@@ -23,6 +36,20 @@ export const addNewModel = createAsyncThunk(
       const resp = await fleetUrl.post("/api/v1/model/addModel", model);
       console.log(resp.data);
       return resp.data?.data;
+    } catch (error) {
+      console.error("API error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const getAllVehicleByModelId=createAsyncThunk(
+  "model/getAllVehicleByModelId",
+  async(id,{rejectWithValue})=>{
+    try {
+      const resp=await fleetUrl.get(`/api/v1/vehicle/getAllVehicleByModelId/${id}`);
+      console.log(resp.data)
+      return resp.data;
     } catch (error) {
       console.error("API error:", error);
       return rejectWithValue(error.response?.data || error.message);

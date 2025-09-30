@@ -1,66 +1,46 @@
-import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
-import { addNewModel, getAllModels } from '@/features/model/services/modelService';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectModels } from '@/features/model/redux/modelSelector';
-import { Button } from 'antd';
+import { addNewModel, getAllModels, getAllModelsWithcount } from '@/features/model/services/modelService';
+import { selectModelWithCount } from '@/features/model/redux/modelSelector';
 
-// Lazy load heavy components
-const NewModelDrawer = lazy(() => import('../components/NewModelDrawer'));
-const ModelTable = lazy(() => import('../components/ModelTable'));
+import ModelHeader from '../components/ModelHeader';
+import ModelList from '../components/ModelList';
+import ModelFormDrawer from '../components/ModelFormDrawer';
 
 const Model = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [name, setName] = useState('');
 
-  const modelsData = useSelector(selectModels);
+  const dispatch = useDispatch();
+  const modelsData = useSelector(selectModelWithCount);
   const loading = useSelector((state) => state.model.loading);
   const error = useSelector((state) => state.model.error);
 
-  const dispatch = useDispatch();
-
-  
   useEffect(() => {
-    dispatch(getAllModels());
+    dispatch(getAllModelsWithcount());
+    console.log(modelsData)
   }, [dispatch]);
 
-  
-  useEffect(() => {
-    console.log('Models updated:', modelsData);
-  }, [modelsData]);
-
-  
   const handleSubmit = useCallback(() => {
-    console.log('Adding model:', name);
-    dispatch(addNewModel({ modelName: name }));
+    dispatch(addNewModel({ modelName: name }))
+    .unwrap()
+    .then(()=> dispatch(getAllModelsWithcount()))
     setDrawerOpen(false);
     setName('');
+   
   }, [dispatch, name]);
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow mb-4">
-        <h1 className="text-2xl font-semibold">All Model</h1>
-
-        <Button type="primary" onClick={() => setDrawerOpen(true)}>
-          + New Vehicle Model
-        </Button>
-      </div>
-
-      {error && <p className="text-red-500">Error: {error}</p>}
-
-      <Suspense fallback={<div>Loading models...</div>}>
-        <ModelTable data={modelsData || []} loading={loading} />
-      </Suspense>
-
-      <Suspense fallback={<div>Loading drawer...</div>}>
-        <NewModelDrawer
-          isOpen={isDrawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          name={name}
-          setName={setName}
-          handleSubmit={handleSubmit}
-        />
-      </Suspense>
+      <ModelHeader onAddClick={() => setDrawerOpen(true)} />
+      <ModelList data={modelsData} loading={loading} error={error} />
+      <ModelFormDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        name={name}
+        setName={setName}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

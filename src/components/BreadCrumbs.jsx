@@ -6,7 +6,7 @@ const Breadcrumbs = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // split pathname → e.g. "/rollout/new" → ["rollout", "new"]
+  
   if (location.pathname === "/rollout") {
     return null;
  }
@@ -22,7 +22,7 @@ const Breadcrumbs = () => {
           className={`cursor-pointer ${isLast ? "font-semibold" : "text-blue-600"}`}
           onClick={() => !isLast && navigate(url)}
         >
-          {snippet.charAt(0).toUpperCase() + snippet.slice(1)}
+          {snippet.charAt(0).toLowerCase() + snippet.slice(1)}
         </span>
       ),
     };

@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewVehicle, getAllVehicles } from "../services/vehicleService";
 import { selectVehicles } from "../redux/vehicleSelector";
 import { Button } from "antd";
+import isEqual from "lodash.isequal";
 
 const Vehicle = () => {
   const dispatch = useDispatch();
-  const vehiclesData = useSelector(selectVehicles); // ✅ safe array
+  const vehiclesData = useSelector(selectVehicles); 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
   const [token, setToken] = useState("");
@@ -39,13 +40,16 @@ const Vehicle = () => {
   };
 
   useEffect(() => {
+   if (!vehiclesData || vehiclesData.length === 0) {
     dispatch(getAllVehicles());
-  }, [dispatch]);
+  }
+  }, [dispatch,vehiclesData]);
+
+
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow
- mb-4">
+      <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow mb-4">
         <h1 className="text-xl font-semibold">All Vehicles</h1>
         <Button type="primary" onClick={() => setDrawerOpen(true)}> 
           + New Vehicle
