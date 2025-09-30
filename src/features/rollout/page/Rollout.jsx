@@ -6,7 +6,7 @@ import { getRollouts } from "../services/rollOutService";
 import RolloutTable from "../component/RolloutTable";
 
 const Rollout = () => {
-  const navigate = useNavigate();
+ 
   const dispatch = useDispatch();
   const { rollouts: data, loading, error } = useSelector((state) => state.rollout);
 
@@ -30,14 +30,8 @@ const Rollout = () => {
 
   return (
     <div className="relative">
-      <div className="sticky top-0 bg-white z-10 shadow mb-4">
-        <div className="flex justify-between items-center px-4 py-4">
-          <h1 className="text-2xl font-semibold">Rollouts</h1>
-          <Button type="primary" onClick={() => navigate("/rollout/new")}>
-            Create New Rollout
-          </Button>
-        </div>
-       
+     <div className="sticky top-0 bg-white z-10 shadow mb-4">
+       <RolloutHeader/>
         <RolloutTable loading={loading} data={sortedData} />
       </div>
     </div>
@@ -45,3 +39,15 @@ const Rollout = () => {
 };
 
 export default Rollout;
+
+export const RolloutHeader=()=>{
+   const navigate = useNavigate();
+  return  <>
+        <div className="flex justify-between items-center px-4 py-4">
+          <h1 className="text-2xl font-semibold">Rollouts</h1>
+          <Button type="primary" onClick={() => navigate("/rollout/new")}>
+            Create New Rollout
+          </Button>
+        </div>
+        </>
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer, Form, Input, Button, Upload, message, Spin } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { uploadBinary } from "../redux/binarySlice";
+import { fetchBinaries, uploadBinary } from "../redux/binarySlice";
 
 const normFile = (e) => {
   if (Array.isArray(e)) {
@@ -17,31 +17,7 @@ const NewBinaryDrawer = ({ isOpen, onClose }) => {
 
   const { loading, error } = useSelector((state) => state.binary);
 
-  // const handleSubmit = async (values) => {
-  //   const fileObj = values.file?.[0]?.originFileObj;
-
-  //   if (!fileObj) {
-  //     message.error("Please select a file before submitting.");
-  //     return;
-  //   }
-
-  //   try {
-  //     // ✅ create FormData exactly like Postman
-  //     const formData = new FormData();
-  //     formData.append("file", fileObj); // "file" must match backend key
-  //     formData.append("name", values.name || "CCU"); // optional extra field
-
-  //     await dispatch(uploadBinary(formData)).unwrap();
-
-  //     message.success("File uploaded successfully!");
-  //     form.resetFields();
-  //     onClose();
-  //   } catch (err) {
-  //     console.error("Upload failed:", err);
-  //     message.error("Upload failed!");
-  //   }
-  // };
-
+  
   const handleSubmit = async (values) => {
   const fileObj = values.file?.[0]?.originFileObj;
 
@@ -53,7 +29,7 @@ const NewBinaryDrawer = ({ isOpen, onClose }) => {
   try {
     await dispatch(
       uploadBinary({ file: fileObj, fileName: values.name || "CCU" })
-    ).unwrap();
+    ).unwrap().then(()=>dispatch(fetchBinaries()));
 
     message.success("File uploaded successfully!");
     form.resetFields();

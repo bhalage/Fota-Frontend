@@ -1,9 +1,9 @@
 import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import ECUManagementTable from "../components/ECUManagementTable";
-import NewEcuDrawer from "../components/NewEcuDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewEcu, getAllEcus } from "../services/ecuService";
+import EcuFormDrawer from "../components/EcuFormDrawer";
 
 const EcuPages = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -43,7 +43,7 @@ const EcuPages = () => {
 
       <ECUManagementTable data={data || []} loading={loading} />
 
-      <NewEcuDrawer
+      <EcuFormDrawer
         isOpen={isDrawerOpen}
         onClose={() => setDrawerOpen(false)}
         handleSubmit={handleSubmit}

@@ -12,7 +12,7 @@ const Layout = () => {
   return (
     <AntLayout style={{ minHeight: "100vh" }}>
 
-      <ErrorBoundary>
+      {/* <ErrorBoundary> */}
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100 }}>
           <Header />
         </div>
@@ -32,7 +32,7 @@ const Layout = () => {
             <Outlet />
           </Content>
         </AntLayout>
-      </ErrorBoundary>
+      {/* </ErrorBoundary> */}
     </AntLayout>
   );
 };

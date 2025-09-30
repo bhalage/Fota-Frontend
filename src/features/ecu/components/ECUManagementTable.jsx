@@ -37,7 +37,7 @@ const ECUManagementTable = ({data,loading}) => {
       columns={columns}
       dataSource={filteredData}
       rowKey="componentId"
-      
+      loading={loading}
       title={() => (
         <div
           style={{
@@ -60,4 +60,4 @@ const ECUManagementTable = ({data,loading}) => {
   );
 };
 
-export default ECUManagementTable;
+export default React.memo(ECUManagementTable);

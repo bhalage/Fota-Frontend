@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllVehicles, addNewVehicle, approveVehicle } from "../services/vehicleService";
+import { getAllVehicles, addNewVehicle, approveVehicle ,getAllRolloutsByVin} from "../services/vehicleService";
  const initialState= {
     vehicleList: null,
+    rolloutList:null,
     loading: false,        
     error: null,
   }
@@ -17,7 +18,7 @@ initialState,
       })
       .addCase(getAllVehicles.fulfilled, (state, action) => {
         state.loading = false;
-        // ✅ ensure payload is always array
+        
         state.vehicleList = action.payload;
       })
       .addCase(getAllVehicles.rejected, (state, action) => {
@@ -27,16 +28,27 @@ initialState,
 
    
       .addCase(addNewVehicle.fulfilled, (state, action) => {
-  state.vehicleList.push(action.payload);  // this should append
+  state.vehicleList.push(action.payload);  
 })
-// ✅ Approve vehicle
+
       .addCase(approveVehicle.fulfilled, (state, action) => {
         const { vin } = action.payload;
         const index = state.vehicleList.findIndex((v) => v.vin === vin);
         if (index !== -1) {
-          state.vehicleList[index].register = "allow"; // mark as onboarded
+          state.vehicleList[index].register = "allow"; 
         }
-      });
+      })
+      .addCase(getAllRolloutsByVin.pending,(state)=>{
+        state.loading=true;
+      })
+      .addCase(getAllRolloutsByVin.rejected,(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+      })
+      .addCase(getAllRolloutsByVin.fulfilled,(state,action)=>{
+        state.loading=false;
+        state.rolloutList=action.payload;
+      })
 
   },
 });

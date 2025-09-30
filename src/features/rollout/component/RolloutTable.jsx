@@ -1,7 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons"; 
 import React, { useMemo, useState } from "react";
 import { Input, Table } from "antd";
-import { useNavigate } from "react-router-dom";
+
 
 const RolloutTable = ({ data, loading }) => {
   const [searchText, setSearchText] = useState("");
@@ -12,7 +12,7 @@ const RolloutTable = ({ data, loading }) => {
       title: "Rollout Name",
       dataIndex: "rolloutName",
       key: "rolloutName",
-      fixed: "left",   // ✅ fixed second col
+      fixed: "left",   
       width: 175,
     },
     {
@@ -49,12 +49,12 @@ const RolloutTable = ({ data, loading }) => {
       title: "Start Time",
       dataIndex: "createdAt",
       key: "createdAt",
-      fixed: "right",  // ✅ last column fixed
+      fixed: "right",  
       width: 200,
     },
   ];
 const filteredData = useMemo(() => {
-  // ✅ If search box is empty, show all rollouts
+  
   if (!searchText || searchText.trim() === "") {
     return data;
   }
@@ -77,7 +77,7 @@ const filteredData = useMemo(() => {
         pagination={{ pageSize: 10 }}
         bordered
         loading={loading}
-        scroll={{ x: 1500 }} // ✅ enables horizontal scroll
+        scroll={{ x: 1500 }} 
         title={() => (
           <div
             style={{
@@ -86,7 +86,7 @@ const filteredData = useMemo(() => {
               alignItems: "center",
             }}
           >
-            {/* Search Input */}
+            
             <Input
               placeholder="Search Rollout By Name"
               prefix={<SearchOutlined />}
@@ -101,4 +101,4 @@ const filteredData = useMemo(() => {
   );
 };
 
-export default RolloutTable;
+export default React.memo(RolloutTable);

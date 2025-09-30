@@ -28,7 +28,7 @@ const NewRollout = () => {
  useEffect(() => {
   if (newRollout?.status) {
     
-    dispatch(getRollouts()); // refresh list
+    dispatch(getRollouts()); 
     navigate("/rollout"); 
   dispatch(resetNewRollout());  
   }
@@ -204,4 +204,4 @@ const NewRollout = () => {
   );
 };
 
-export default NewRollout;
+export default React.memo(NewRollout);
