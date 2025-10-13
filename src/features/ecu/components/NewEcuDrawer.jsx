@@ -14,7 +14,7 @@ const NewEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
     validationSchema: Yup.object({
       ecuName: Yup.string()
         .required("Name is required")
-        .min(5, "Name must be at least 5 characters"),
+        .min(3, "Name must be at least 3 characters"),
       componentId: Yup.string()
         .required("Component ID is required")
         .min(3, "Component ID must be at least 3 characters"),
@@ -23,9 +23,9 @@ const NewEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
         .min(2, "Abbreviation must be at least 2 characters"),
     }),
     onSubmit: (values, { resetForm }) => {
-      handleSubmit(values);   // ✅ pass form values up
+      handleSubmit(values);   
       resetForm();
-      onClose();              // ✅ close drawer after submit
+      onClose();              
     },
   });
 
@@ -53,7 +53,7 @@ const NewEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
     >
       <Form layout="vertical" onFinish={formik.handleSubmit}>
         <Form.Item
-          label="ECU Name"
+          label="Enter ECU Name"
           validateStatus={
             formik.touched.ecuName && formik.errors.ecuName ? "error" : ""
           }
@@ -73,7 +73,7 @@ const NewEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
         </Form.Item>
 
         <Form.Item
-          label="Component ID"
+          label="Enter Component ID"
           validateStatus={
             formik.touched.componentId && formik.errors.componentId
               ? "error"
@@ -95,7 +95,7 @@ const NewEcuDrawer = ({ isOpen, onClose, handleSubmit }) => {
         </Form.Item>
 
         <Form.Item
-          label="Abbreviation"
+          label="Enter Abbreviation"
           validateStatus={
             formik.touched.abbreviation && formik.errors.abbreviation
               ? "error"

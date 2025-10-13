@@ -6,10 +6,10 @@ export const getAllModels = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {    
       const resp = await fleetUrl.get("/api/v1/model/getAllModel");
-      console.log("API response:", resp.data);
+      
       return resp.data?.data || resp.data || [];
     } catch (error) {
-      console.error("API error:", error);
+      
       return rejectWithValue(error);
     }
   }
@@ -19,10 +19,10 @@ export const getAllModelsWithcount=createAsyncThunk(
   async(_,{rejectWithValue})=>{
     try {
       const resp= await fleetUrl.get("/api/v1/model/getAllModelwithCount")
-      console.log(resp.data);
+     
       return resp.data?.data;
     } catch (error) {
-      console.error("API Error",error);
+     
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -34,10 +34,10 @@ export const addNewModel = createAsyncThunk(
   async (model, { rejectWithValue }) => {
     try {
       const resp = await fleetUrl.post("/api/v1/model/addModel", model);
-      console.log(resp.data);
+     
       return resp.data?.data;
     } catch (error) {
-      console.error("API error:", error);
+     
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -48,11 +48,12 @@ export const getAllVehicleByModelId=createAsyncThunk(
   async(id,{rejectWithValue})=>{
     try {
       const resp=await fleetUrl.get(`/api/v1/vehicle/getAllVehicleByModelId/${id}`);
-      console.log(resp.data)
+     
       return resp.data;
     } catch (error) {
-      console.error("API error:", error);
+      
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+

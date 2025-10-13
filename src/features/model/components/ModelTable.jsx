@@ -9,16 +9,11 @@ const ModelTable = ({ data, loading }) => {
   const navigate = useNavigate();
   console.log(data)
   const columns = [
-    // {
-    //   title: "Model ID",
-    //   dataIndex: "modelId",
-    //   key: "modelId",
-    //   sorter: (a, b) => a.modelId.localeCompare(b.modelId),
-    // },
+  
     {
       title: "Model Name",
       dataIndex: "modelName",
-      key: "modelName",
+      key: "name",
       sorter: (a, b) => a.modelName.localeCompare(b.modelName),
       render: (modelName, record) => (
     <a

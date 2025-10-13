@@ -1,11 +1,12 @@
 import { SearchOutlined } from "@ant-design/icons"; 
 import React, { useMemo, useState } from "react";
-import { Input, Table } from "antd";
+import { Input, Table, Tag } from "antd";
+import VehicleLogs from "@/features/vehicle/components/VehicleLogs";
 
 
 const RolloutTable = ({ data, loading }) => {
   const [searchText, setSearchText] = useState("");
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const columns = [
    
     {
@@ -52,6 +53,35 @@ const RolloutTable = ({ data, loading }) => {
       fixed: "right",  
       width: 200,
     },
+    {
+    title: "Status",
+    dataIndex: "zipFileStatus",
+    key: "zipFileStatus",
+    fixed: "right",
+    width: 200,
+    render: (status) => {
+      let color = "";
+
+      switch (status?.toLowerCase()) {
+        case "in_progress":
+          color = "blue";
+          break;
+        case "created":
+          color = "gold";
+          break;
+        case "uploaded":
+          color = "green";
+          break;
+        case "failed":
+          color = "red";
+          break;
+        default:
+          color = "default";
+      }
+
+      return <Tag color={color}>{status}</Tag>;
+    },
+  },
   ];
 const filteredData = useMemo(() => {
   
@@ -67,6 +97,17 @@ const filteredData = useMemo(() => {
   );
 }, [data, searchText]);
 
+const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div>

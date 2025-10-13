@@ -18,7 +18,6 @@ const Model = () => {
 
   useEffect(() => {
     dispatch(getAllModelsWithcount());
-    console.log(modelsData)
   }, [dispatch]);
 
   const handleSubmit = useCallback(() => {

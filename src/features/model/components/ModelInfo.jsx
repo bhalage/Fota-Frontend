@@ -39,13 +39,6 @@ const ModelInfo = () => {
     }
   }, [dispatch, model?.modelId]);
 
-  useEffect(() => {
-    console.log("ECUs for model:", ecus);
-    console.log(variantsBymodelId);
-    console.log(vehiclesByModelId);
-  const model = location.state?.model;
-  }, [ecus,variantsBymodelId,vehiclesByModelId]);
-
   const handleSubmit = (values) => {
     console.log("Submitting new ECU:", values);
     const ecuIds = values.map(ecu => ecu.ecuId);
@@ -101,7 +94,7 @@ const ModelInfo = () => {
                 >
                   <h3 style={{ margin: 0, fontWeight: 600, fontSize: "16px", color: "black", cursor: "auto" }}>ECUs Available</h3>
                   <Button type="primary" onClick={() => setDrawerOpen(true)}>
-                    + New ECU
+                    Attach ECU
                   </Button>
                 </div>)}
                 columns={columns}

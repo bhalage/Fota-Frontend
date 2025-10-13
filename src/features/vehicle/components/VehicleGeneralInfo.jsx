@@ -1,73 +1,82 @@
+import React, { useState, useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { Collapse, Row, Col, Typography, Tag, Tooltip, Button, Select } from "antd";
-import { useState } from "react";
+import { Collapse, Row, Col, Typography, Tag, Tooltip, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { approveVehicle } from "../services/vehicleService";
 
 const { Panel } = Collapse;
 const { Text } = Typography;
 
-const VehicleGeneralInfo = () => {
+const VehicleGeneralInfo = React.memo(() => {
   const location = useLocation();
   const vehicle = location.state?.vehicle;
   const dispatch = useDispatch();
 
-  const [status, setStatus] = useState(vehicle.register);
+  const [status, setStatus] = useState(vehicle?.register || "pending");
+  const [loading, setLoading] = useState(false);
 
+  
   if (!vehicle) {
     return <p>No vehicle data found</p>;
   }
 
   
-  let color = "red";
-  let label = "Pending";
-  let tooltipText = "Click to onboard vehicle";
-
-  if (status === "verified") {
-    color = "orange";
-    label = "Verified";
-    tooltipText = "Awaiting final approval";
-  } else if (status === "allow") {
-    color = "green";
-    label = "On Boarded";
-    tooltipText = "Vehicle is onboarded";
-  } else if (status === "cancel") {
-    color = "red";
-    label = "Off Boarded";
-  }
+  const { color, label, tooltipText } = useMemo(() => {
+    switch (status) {
+      case "verified":
+        return {
+          color: "orange",
+          label: "Verified",
+          tooltipText: "Awaiting final approval",
+        };
+      case "allow":
+      case "approve":
+        return {
+          color: "green",
+          label: "On Boarded",
+          tooltipText: "Vehicle is onboarded",
+        };
+      case "cancel":
+        return {
+          color: "red",
+          label: "Off Boarded",
+          tooltipText: "Vehicle is off boarded",
+        };
+      default:
+        return {
+          color: "red",
+          label: "Pending",
+          tooltipText: "Waiting for verification",
+        };
+    }
+  }, [status]);
 
   
-  const allOptions = ["allow", "pending", "cancel"];
-
-  const handleSelectChange = (value) => {
-    
-    console.log("New status selected:", value);
-
-    // dispatch(approveVehicle(vehicle.vin, value))
-    //  dispatch(approveVehicle(vehicle.vin,"approve"));
-
-    if (status === "pending") {
-      
-      return;
-    }
-    
-    if (status === "verified" && (value === "allow" || value === "cancel")) {
-      setStatus(value);
-      console.log(value)
-
-      dispatch(approveVehicle({ vin: vehicle.vin, status: "approve" }));
-
-    }
-
-
-  };
+  const handleStatusUpdate = useCallback(
+    async (newStatus) => {
+      setLoading(true);
+      try {
+        console.log(newStatus);
+        
+        dispatch(approveVehicle({ vin: vehicle.vin, status: newStatus })).unwrap().then((res) => {
+          console.log(res);
+          setStatus(newStatus);
+        });
+      } catch (error) {
+        console.error(`Failed to update vehicle status:`, error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [dispatch, vehicle.vin]
+  );
 
   return (
     <div style={{ paddingTop: "10px" }}>
       <Collapse
         defaultActiveKey={["1"]}
         expandIconPosition="end"
-        bordered={true}
+        bordered
         style={{ background: "#fafafa", borderRadius: "8px" }}
       >
         <Panel header="General Information" key="1">
@@ -75,6 +84,7 @@ const VehicleGeneralInfo = () => {
             <Col span={12}>
               <Text strong>Vehicle Name:</Text> {vehicle.vehicleName}
             </Col>
+
             <Col span={12}>
               <Text
                 copyable={{
@@ -90,47 +100,59 @@ const VehicleGeneralInfo = () => {
             <Col span={12}>
               <Text strong>Year:</Text> {vehicle.year}
             </Col>
+
             <Col span={12}>
               <Text strong>Model:</Text>{" "}
               {vehicle.variantDto?.modelDto?.modelName || "-"}
             </Col>
+
             <Col span={12}>
               <Text strong>Variant:</Text>{" "}
               {vehicle.variantDto?.variantName || "-"}
             </Col>
 
-            <Col span={12}>
-              <Text strong>Registration Status:</Text>{" "}
-              {/* <Tooltip title={tooltipText}> */}
+            <Col
+              span={12}
+              style={{ display: "flex", alignItems: "center", gap: "10px" }}
+            >
+              <Text strong>Status:</Text>
+              <Tooltip title={tooltipText}>
+                <Tag color={color} style={{ fontWeight: "bold", fontSize: 14 }}>
+                  {label}
+                </Tag>
+              </Tooltip>
 
-              <Select
-                value={status}
-                onChange={handleSelectChange}
-                style={{ width: "25%", textAlign: "center" }}
-                disabled={status === "pending"} // disable when pending
-              >
-                {allOptions.map((opt) => (
-                  <Select.Option key={opt} value={opt} >
-                    {opt === "allow"
-                      ? "On Boarded"
-                      : opt === "cancel"
-                        ? "Off Boarded"
-                        : opt === "pending"
-                          ? "Pending"
-                          : opt}
-                  </Select.Option>
-                ))}
-              </Select>
+             
+              {status === "verified" && (
+                <>
+                  <Button
+                    type="primary"
+                    onClick={() => handleStatusUpdate("approve")}
+                    loading={loading}
+                    style={{
+                      backgroundColor: "#28a745",
+                      borderColor: "#28a745",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Allow
+                  </Button>
 
-              {/* </Tooltip> */}
+                  <Button
+                    danger
+                    onClick={() => handleStatusUpdate("cancel")}
+                    loading={loading}
+                  >
+                    Reject
+                  </Button>
+                </>
+              )}
             </Col>
-
-
           </Row>
         </Panel>
       </Collapse>
     </div>
   );
-};
+});
 
-export default VehicleGeneralInfo;
+export default React.memo(VehicleGeneralInfo);
