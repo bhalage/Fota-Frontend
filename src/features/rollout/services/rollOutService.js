@@ -15,7 +15,7 @@ export const createRollout = createAsyncThunk(
     "rollout/createRollout", 
     async (rolloutData, { rejectWithValue }) => {
       try {
-        const resp = await fleetUrl.post("/api/v1/zipupload", rolloutData);
+        const resp = await fleetUrl.post("/api/v1/createRollout", rolloutData);
         console.log("Response from createRollout:", resp.data);
         return resp.data;
       } catch (error) {

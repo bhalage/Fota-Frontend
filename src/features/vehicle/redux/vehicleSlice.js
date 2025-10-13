@@ -5,6 +5,8 @@ import { getAllVehicles, addNewVehicle, approveVehicle ,getAllRolloutsByVin} fro
     rolloutList:null,
     loading: false,        
     error: null,
+    vehicleDeleteStatus:null,
+
   }
 const vehicleSlice = createSlice({
   name: "vehicles",
@@ -12,7 +14,6 @@ initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Get vehicles
       .addCase(getAllVehicles.pending, (state) => {
         state.loading = true;
       })
@@ -49,6 +50,21 @@ initialState,
         state.loading=false;
         state.rolloutList=action.payload;
       })
+      .addCase('vehicles/deleteVehicle/pending', (state) => {
+        state.loading = true;
+        state.vehicleDeleteStatus = null;
+      })
+      .addCase('vehicles/deleteVehicle/fulfilled', (state, action) => {
+        state.loading = false;
+        state.vehicleDeleteStatus = action.payload;
+        state.vehicleList = state.vehicleList.filter(vehicle => vehicle.vehicleId !== action.payload.vehicleId);
+        console.log(state.vehicleList);
+      })
+      .addCase('vehicles/deleteVehicle/rejected', (state, action) => {
+        state.loading = false;
+        state.vehicleDeleteStatus = 'failed';
+        state.error = action.payload;
+      });
 
   },
 });

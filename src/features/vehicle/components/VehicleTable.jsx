@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { Input, Table, Tag } from "antd";
+import { Input, Table, Tag, Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
-import { SearchOutlined} from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { DeleteFilled, SearchOutlined} from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteVehicle } from "../services/vehicleService";
 const VehicleTable = ({ data }) => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
 const loading=useSelector((state)=>state.vehicles.loading);
+const dispatch=useDispatch();
+const handleDelete = (vehicleId) => {
+    console.log("Delete vehicle with ID:", vehicleId);
+   
+    if(vehicleId){
+       const payload={
+      vehicleId:vehicleId
+    }
+      dispatch(deleteVehicle(vehicleId))
+    }
+  };
 
 const columns = [
   {
@@ -19,23 +31,25 @@ const columns = [
     title: "VIN",
     dataIndex: "vin",
     key: "vin",
+    width:350,
     sorter: (a, b) => a.vin.localeCompare(b.vin),
     render: (vin, record) => (
       <a
         onClick={() =>
           navigate(`/vehicles/${record.vin}`, { state: { vehicle: record } })
         }
-        style={{ color: "#1890ff" }}
+        // style={{ color: "#1890ff" ,width:"20px"}}
       >
         {vin}
       </a>
     ),
   },
-  // Only add these columns if at least one record has data
+   
   ...(data.some(item => item.variantDto?.modelDto?.modelName)
     ? [{
         title: "Model Name",
         key: "modelName",
+        width:150,
         render: record => record.variantDto?.modelDto?.modelName,
         sorter: (a, b) =>
           (a.variantDto?.modelDto?.modelName || "").localeCompare(
@@ -55,8 +69,15 @@ const columns = [
       }]
     : []),
   {
+    title: "Year",
+    dataIndex: "year",
+    key: "year",
+    sorter: (a, b) => (a.year || 0) - (b.year || 0),
+  },
+    {
     title: "Status",
     key: "register",
+    width:100,
     render: record => {
       let color = "red";
       let label = "Pending";
@@ -75,12 +96,20 @@ const columns = [
       return <Tag color={color} style={{ minWidth: 90, textAlign: "center" }}>{label}</Tag>;
     },
   },
+ 
   {
-    title: "Year",
-    dataIndex: "year",
-    key: "year",
-    sorter: (a, b) => (a.year || 0) - (b.year || 0),
-  },
+      title: "Action",
+      key: "action",
+      align: "center",
+      render: (record) => (
+        <Tooltip title="Delete Vehicle">
+          <DeleteFilled       
+            onClick={() => handleDelete(record.vehicleId)}
+            style={{ color: "#ff6347", fontSize: "18px", cursor: "pointer" }}
+          />
+        </Tooltip>
+      ),
+    },
 ];
 const sortedData = [...data].sort((a, b) => {
     const dateA = new Date(a.auditInfoDto?.createdAt);
@@ -123,4 +152,4 @@ const sortedData = [...data].sort((a, b) => {
   );
 };
 
-export default VehicleTable;
+export default React.memo(VehicleTable);

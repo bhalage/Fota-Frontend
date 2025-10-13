@@ -1,12 +1,13 @@
 import { Button } from "antd";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getRollouts } from "../services/rollOutService";
 import RolloutTable from "../component/RolloutTable";
+import NewRollout from "../component/NewRollout";
 
 const Rollout = () => {
- 
+  
   const dispatch = useDispatch();
   const { rollouts: data, loading, error } = useSelector((state) => state.rollout);
 
@@ -41,13 +42,19 @@ const Rollout = () => {
 export default Rollout;
 
 export const RolloutHeader=()=>{
-   const navigate = useNavigate();
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  //  const navigate = useNavigate();
   return  <>
         <div className="flex justify-between items-center px-4 py-4">
           <h1 className="text-2xl font-semibold">Rollouts</h1>
-          <Button type="primary" onClick={() => navigate("/rollout/new")}>
+          <Button type="primary" 
+          // onClick={() => navigate("/rollout/new")}
+          onClick={() => setDrawerOpen(true)}
+          >
             Create New Rollout
           </Button>
+          <NewRollout  isOpen={isDrawerOpen}
+        onClose={() => setDrawerOpen(false)}/>
         </div>
         </>
 }

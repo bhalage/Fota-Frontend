@@ -1,5 +1,6 @@
 import axios from "axios";
 import { loginStart, loginSuccess, loginFailure } from "../redux/authSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const loginUser = (credentials) => async (dispatch) => {
   dispatch(loginStart());
@@ -21,3 +22,16 @@ export const loginUser = (credentials) => async (dispatch) => {
     dispatch(loginFailure(error.response?.data?.message || "Login Failed"));
   }
 };
+
+export const getAllUsers = createAsyncThunk (
+  "auth/getAllUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+    const response = await axios.get("http://localhost:8088/api/v1/um/getAllUsers");
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+})

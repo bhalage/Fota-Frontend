@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getAllUsers } from "../services/authService";
 
 const initialState = {
   user: null,
+  users:null,
   loading: false,
   error: null
 };
@@ -29,6 +31,20 @@ const authSlice = createSlice({
       localStorage.removeItem("idToken");
       localStorage.removeItem("refreshToken");
     }
+  },
+  extraReducers: (builder) => {
+    builder
+    .addCase(getAllUsers.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(getAllUsers.fulfilled, (state, action) => {
+      state.loading = false;
+      state.users = action.payload;
+    })
+    .addCase(getAllUsers.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+  }) 
   }
 });
 

@@ -1,36 +1,31 @@
 import { Button } from "antd";
-import React, { useEffect, useState } from "react";
-import ECUManagementTable from "../components/ECUManagementTable";
+import React, { lazy, useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewEcu, getAllEcus } from "../services/ecuService";
-import EcuFormDrawer from "../components/EcuFormDrawer";
+
+const EcuFormDrawer = lazy(() => import("../components/EcuFormDrawer"));
+const ECUManagementTable = lazy(() => import("../components/ECUManagementTable"));
 
 const EcuPages = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.ecu.loading);
   const data = useSelector((state) => state.ecu.ecus);
-  const error = useSelector((state) => state.ecu.error);
 
   useEffect(() => {
     dispatch(getAllEcus());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("ECUs updated:", data);
-    console.log("Error state:", error);
-  }, [data,error]);
-  if(error){
-    throw new Error(error);
-  }
+  const handleSubmit = useCallback(
+    (values) => {
+      dispatch(addNewEcu(values)).then(() => {
+        dispatch(getAllEcus());
+      });
+    },
+    [dispatch]
+  );
 
-  const handleSubmit = (values) => {
-    console.log("Submitting new ECU:", values);
-    dispatch(addNewEcu(values)).then(() => {
-      dispatch(getAllEcus()); 
-    });
-  };
+  const handleDrawerClose = useCallback(() => setDrawerOpen(false), []);
 
   return (
     <div className="relative">
@@ -45,11 +40,11 @@ const EcuPages = () => {
 
       <EcuFormDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={handleDrawerClose}
         handleSubmit={handleSubmit}
       />
     </div>
   );
 };
 
-export default EcuPages;
+export default React.memo(EcuPages);

@@ -11,13 +11,20 @@ const NewVehicleDrawer = ({ isOpen, onClose, vehicle, setVehicle, handleSubmit }
   const modelsData = useSelector(selectModels);
   const variantData = useSelector(selectVariants);
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (isOpen) {
       dispatch(getAllModels());
       dispatch(getVariants());
+      form.setFieldsValue(vehicle);
     }
-  }, [dispatch, isOpen]);
+  }, [dispatch, isOpen, vehicle, form]);
+
+  const onFinish = () => {
+    handleSubmit();
+    onClose();
+  };
 
   return (
     <Drawer
@@ -27,7 +34,7 @@ const NewVehicleDrawer = ({ isOpen, onClose, vehicle, setVehicle, handleSubmit }
       open={isOpen}
       footer={
         <div className="flex justify-start gap-3">
-          <Button type="primary" onClick={handleSubmit}>
+          <Button type="primary" onClick={() => form.submit()}>
             Create Vehicle
           </Button>
           <Button onClick={onClose} type="text" danger>
@@ -36,16 +43,17 @@ const NewVehicleDrawer = ({ isOpen, onClose, vehicle, setVehicle, handleSubmit }
         </div>
       }
     >
-      <Form layout="vertical">
+      <Form layout="vertical" form={form} onFinish={onFinish} initialValues={vehicle}>
         <Form.Item
           label="Select Model"
-          required
+          name="modelId"
+          rules={[{ required: true, message: 'Please select a model' }]}
         >
           <Select
             placeholder="Select a model"
-            value={vehicle.modelId || undefined}
             onChange={(value) => setVehicle({ ...vehicle, modelId: value })}
           >
+            <Option value="" default>Select Model</Option> 
             {modelsData?.map((model) => (
               <Option key={model.modelId} value={model.modelId}>
                 {model.modelName}
@@ -56,13 +64,14 @@ const NewVehicleDrawer = ({ isOpen, onClose, vehicle, setVehicle, handleSubmit }
 
         <Form.Item
           label="Select Variant"
-          required
+          name="variantId"
+          rules={[{ required: true, message: 'Please select a variant' }]}
         >
           <Select
             placeholder="Select a Variant"
-            value={vehicle.variantId || undefined}
             onChange={(value) => setVehicle({ ...vehicle, variantId: value })}
           >
+            <Option value="" default>Select Variant</Option>
             {variantData?.map((variant) => (
               <Option key={variant.variantId} value={variant.variantId}>
                 {variant.variantName}
@@ -73,22 +82,36 @@ const NewVehicleDrawer = ({ isOpen, onClose, vehicle, setVehicle, handleSubmit }
 
         <Form.Item
           label="Name"
-          required
+          name="vehicleName"
+          rules={[
+            { required: true, message: 'Vehicle name is required' },
+            { min: 2, max: 50, message: 'Vehicle name must be between 2 and 50 characters' },
+            {
+              pattern: /^[A-Za-z0-9 .\-/]+$/,
+              message:
+                'Vehicle name can only contain letters, numbers, spaces, hyphens, dots, and slashes',
+            },
+          ]}
         >
           <Input
             placeholder="Enter a display name"
-            value={vehicle.vehicleName}
             onChange={(e) => setVehicle({ ...vehicle, vehicleName: e.target.value })}
           />
         </Form.Item>
 
         <Form.Item
           label="Year"
-          required
+          name="year"
+          rules={[
+            { required: true, message: 'Vehicle year is required' },
+            {
+              pattern: /^(19|20)\d{2}$/,
+              message: 'Please enter a valid year (e.g. 2024)',
+            },
+          ]}
         >
           <Input
             placeholder="Enter the Year"
-            value={vehicle.year}
             onChange={(e) => setVehicle({ ...vehicle, year: e.target.value })}
           />
         </Form.Item>

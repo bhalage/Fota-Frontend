@@ -10,8 +10,9 @@ const NewModelDrawer = ({ isOpen, onClose, name, setName, handleSubmit }) => {
     validationSchema: Yup.object({
       name: Yup.string()
         .required("Name is required")
-        .min(5, "Name must be at least 5 characters")
-        .matches(/^\S+$/, "Spaces are not allowed"),
+        .min(5, "Name must be at least 2 characters")
+        .max(30,"Model name must be at most 30 characters")
+        .matches(/^[A-Za-z0-9\- ]+$/, "Only letters, numbers, spaces, and hyphens are allowed"),
     }),
     onSubmit: (values) => {
       setName(values.name);

@@ -28,14 +28,13 @@ const handleSubmit = async () => {
         description: variant.description,
         modelIdToAddVariant: variant.modelId,
       })
-    ).unwrap(); // ✅ wait for result
+    ).unwrap(); 
 
     console.log("Variant added:", result);
 
-    // ✅ refresh the variants list after successful add
+    
     await dispatch(getVariants());
 
-    // ✅ reset state & close drawer
     setVariant({ name: "", description: "", modelId: "" });
     setDrawerOpen(false);
   } catch (error) {
@@ -57,7 +56,6 @@ const handleSubmit = async () => {
         <h1 className="text-2xl font-semibold">All Variants</h1>
         <Button
         type='primary'
-          // className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           onClick={() => setDrawerOpen(true)}
         >
           + New Vehicle Variant
@@ -66,8 +64,6 @@ const handleSubmit = async () => {
     
     {error && <p className='text-red-500'>Error:{error}</p>}
     <VariantTable data={variantsData || []} loading={loading}/>
-
-      {/* {loading ?<>Variant Loading...</>:<VariantTable data={variantsData || []} />} */}
 
       <NewVariantDrawer
         isOpen={isDrawerOpen}

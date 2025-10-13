@@ -31,7 +31,7 @@ const NewVariantDrawer = ({ isOpen, onClose, variant, setVariant, handleSubmit }
       destroyOnClose
       footer={
         <div style={{ textAlign: 'left' }}>
-          <Button type="primary" onClick={onFinish} style={{ marginRight: 8 }}>
+          <Button type="primary" onClick={() => form.submit()} style={{ marginRight: 8 }}>
             Create Variant
           </Button>
           <Button onClick={onClose} danger type="text">
@@ -46,10 +46,13 @@ const NewVariantDrawer = ({ isOpen, onClose, variant, setVariant, handleSubmit }
         onFinish={onFinish}
         initialValues={variant}
       >
+        {/* Model Selection */}
         <Form.Item
           label="Select Model"
           name="modelId"
-          rules={[{ required: true, message: 'Please select a model' }]}
+          rules={[
+            { required: true, message: 'Please select a model' }
+          ]}
         >
           <Select
             placeholder="Select a model"
@@ -63,10 +66,18 @@ const NewVariantDrawer = ({ isOpen, onClose, variant, setVariant, handleSubmit }
           </Select>
         </Form.Item>
 
+        {/* Variant Name */}
         <Form.Item
           label="Name"
           name="name"
-          rules={[{ required: true, message: 'Please enter variant name' }]}
+          rules={[
+            { required: true, message: 'Variant name is required' },
+            { min: 2, max: 50, message: 'Variant name must be between 2 and 50 characters' },
+            {
+              pattern: /^[A-Za-z0-9 .\-/]+(?: [A-Za-z0-9 .\-/]+)*$/,
+              message: 'Only letters, numbers, spaces, hyphens, dots, and slashes are allowed',
+            },
+          ]}
         >
           <Input
             placeholder="Enter variant name"
@@ -74,10 +85,14 @@ const NewVariantDrawer = ({ isOpen, onClose, variant, setVariant, handleSubmit }
           />
         </Form.Item>
 
+        {/* Variant Description */}
         <Form.Item
           label="Description"
           name="description"
-          rules={[{ required: true, message: 'Please enter description' }]}
+          rules={[
+            { required: true, message: 'Variant description is required' },
+            { min: 2, max: 100, message: 'Description must be between 2 and 100 characters' },
+          ]}
         >
           <Input.TextArea
             rows={4}

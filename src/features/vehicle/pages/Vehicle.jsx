@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import NewVehicleDrawer from "../components/NewVehicleDrawer";
 import TokenPopup from "../components/TokenPopup";
 import VehicleTable from "../components/VehicleTable";
@@ -6,15 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewVehicle, getAllVehicles } from "../services/vehicleService";
 import { selectVehicles } from "../redux/vehicleSelector";
 import { Button } from "antd";
-import isEqual from "lodash.isequal";
 
 const Vehicle = () => {
   const dispatch = useDispatch();
-  const vehiclesData = useSelector(selectVehicles); 
+  const vehiclesData = useSelector(selectVehicles);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
   const [token, setToken] = useState("");
-
+ 
   const [vehicle, setVehicle] = useState({
     modelId: "",
     variantId: "",
@@ -22,8 +21,7 @@ const Vehicle = () => {
     year: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       const result = await dispatch(addNewVehicle(vehicle)).unwrap();
       console.log("Vehicle added:", result);
@@ -40,26 +38,23 @@ const Vehicle = () => {
   };
 
   useEffect(() => {
-   if (!vehiclesData || vehiclesData.length === 0) {
-    dispatch(getAllVehicles());
-  }
-  }, [dispatch,vehiclesData]);
-
-
-
+    if (!vehiclesData || vehiclesData.length === 0) {
+      dispatch(getAllVehicles());
+     
+    }
+  }, [dispatch, vehiclesData]);
+    useEffect(() => {
+  console.log(vehiclesData);
+},[vehiclesData])
   return (
     <div className="relative">
       <div className="flex justify-between items-center sticky top-0 bg-white z-10 px-4 py-4 shadow mb-4">
         <h1 className="text-xl font-semibold">All Vehicles</h1>
-        <Button type="primary" onClick={() => setDrawerOpen(true)}> 
+        <Button type="primary" onClick={() => setDrawerOpen(true)}>
           + New Vehicle
         </Button>
       </div>
-
-      {/* Vehicle list */}
       <VehicleTable data={vehiclesData} />
-
-      {/* Drawer */}
       <NewVehicleDrawer
         isOpen={isDrawerOpen}
         onClose={() => setDrawerOpen(false)}
@@ -67,8 +62,6 @@ const Vehicle = () => {
         setVehicle={setVehicle}
         handleSubmit={handleSubmit}
       />
-
-      {/* Token popup */}
       <TokenPopup
         isOpen={tokenPopupOpen}
         onClose={() => setTokenPopupOpen(false)}
@@ -78,4 +71,4 @@ const Vehicle = () => {
   );
 };
 
-export default Vehicle;
+export default React.memo(Vehicle);
